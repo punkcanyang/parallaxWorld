@@ -53,6 +53,7 @@ if __name__ == "__main__":
         args.send_to_peer_addr = f"ipc://{tempfile.NamedTemporaryFile().name}"
         args.executor_input_ipc = f"ipc://{tempfile.NamedTemporaryFile().name}"
         args.executor_output_ipc = f"ipc://{tempfile.NamedTemporaryFile().name}"
+        args.enable_weight_refit = True
 
         logger.debug(f"executor_input_addr: {args.executor_input_ipc}")
         logger.debug(f"executor_output_addr: {args.executor_output_ipc}")

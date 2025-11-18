@@ -561,6 +561,8 @@ class GradientServer:
             cid:        List[str],  cid list.
             index_map:  Dict[str],  key(weight_name): value(cid)
         """
+        print("begin chat and run refit:")
+        print(message)
         # step1. Check weight refit trigger message
         time_stamp = message.get("time_stamp", None)
         cid = message.get("cid", None)

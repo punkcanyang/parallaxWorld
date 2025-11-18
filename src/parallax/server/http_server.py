@@ -388,7 +388,7 @@ async def v1_chat_completions(raw_request: fastapi.Request):
                 logger.info(f"Sending abort request due to error: {request_id}")
                 app.state.http_handler.abort_request(request_id)
                 app.state.http_handler.release_request(request_id)
-            return create_error_response("Internal server error", "InternalServerError")
+            return create_error_response("Internal server error", e)
 
 
 @app.post("/v1/chat/completions")

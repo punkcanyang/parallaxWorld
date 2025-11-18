@@ -187,7 +187,7 @@ class Node:
     avg_layer_latency_ms: Optional[float] = None
     load_compensator: float = 0.05
 
-    last_refit_time = 0.0
+    last_refit_time: float = 0.0
 
     rtt_to_nodes: Optional[Dict[str, float]] = None
     rtt_getter: Optional[Callable[["Node", "Node"], float]] = None

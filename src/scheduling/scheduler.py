@@ -189,9 +189,12 @@ class Scheduler:
                     node.set_layer_allocation(layer_idx, end)
 
     def update_last_refit_time(self):
-        min_refit_time = 0.0
+        min_refit_time = None
         for node in self.node_id_to_node.values():
-            min_refit_time = min(min_refit_time, node.last_refit_time)
+            if min_refit_time is None:
+                min_refit_time = node.last_refit_time
+            else:
+                min_refit_time = min(min_refit_time, node.last_refit_time)
         self.last_refit_time = min_refit_time
         return self.last_refit_time
 

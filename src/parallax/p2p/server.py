@@ -562,7 +562,15 @@ class GradientServer:
             index_map:  Dict[str],  key(weight_name): value(cid)
         """
         def _download_weight_thread(weight_dir, cid):
-            raw_data = self.lattica.get_block(cid)
+            raw_data = None
+            while True:
+                try:
+                    raw_data = self.lattica.get_block(cid)
+                    break
+                except Exception as e:
+                    pass
+            if raw_data is None:
+                raise RuntimeError(f"Failed to get block cid={cid}")
             file_name = cid + ".safetensors"
             file_name = os.path.join(weight_dir, file_name)
             with open(file_name, "wb") as f:

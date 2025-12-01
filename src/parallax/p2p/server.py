@@ -615,7 +615,7 @@ class GradientServer:
             while download_cid_set:
                 cid = download_cid_set.pop()
                 logger.info(f"Start downloading refit weight {cid}")
-                download_thread = threading.Tread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)
+                download_thread = threading.Thread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)
                 thread_pool.append(download_thread)
                 # try:
                 #     logger.info(f"Start downloading refit weight {cid}")

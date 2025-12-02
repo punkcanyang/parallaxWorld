@@ -563,9 +563,12 @@ class GradientServer:
         """
         def _download_weight_thread(weight_dir, cid):
             raw_data = None
+            time_begin_get_block = time.time()
+            time_end_get_block = None
             while True:
                 try:
                     raw_data = self.lattica.get_block(cid)
+                    time_end_get_block = time.time()
                     break
                 except Exception as e:
                     pass
@@ -575,6 +578,10 @@ class GradientServer:
             file_name = os.path.join(weight_dir, file_name)
             with open(file_name, "wb") as f:
                 f.write(raw_data)
+            time_end_write_file = time.time()
+            interval_get_block = time_end_get_block - time_begin_get_block
+            interval_write_file = time_end_write_file - time_end_get_block
+            logger.info(f"Finish download cid={cid}, get_block={interval_get_block}, write_file={interval_write_file}")
 
         message = message.result(timeout=300)
         # step1. Check weight refit trigger message

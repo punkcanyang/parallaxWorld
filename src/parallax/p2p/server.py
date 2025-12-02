@@ -589,9 +589,9 @@ class GradientServer:
         message = message.result(timeout=300)
         # step1. Check weight refit trigger message
         time_stamp = message.get("time_stamp", None)
-        cid = message.get("cid", None)
+        cid_list = message.get("cid", None)
         index_map = message.get("index_map", None)
-        if time_stamp is None or cid is None:
+        if time_stamp is None or cid_list is None:
             return
         if self.last_refit_time >= float(time_stamp):
             # Weight already updated
@@ -638,19 +638,15 @@ class GradientServer:
                 for j in range(max_concurrency):
                     if len(download_cid_set) == 0:
                         continue
+                    else:
+                        cid = download_cid_set.pop()
                     logger.info(f"Start downloading refit weight {cid}")
                     download_thread = threading.Thread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)
                     download_thread.start()
                     thread_pool.append(download_thread)
                 for t in thread_pool:
                     t.join()
-            thread_pool = []
-            while download_cid_set:
-                cid = download_cid_set.pop()
-                logger.info(f"Start downloading refit weight {cid}")
-                download_thread = threading.Thread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)
-                download_thread.start()
-                thread_pool.append(download_thread)
+
                 # try:
                 #     logger.info(f"Start downloading refit weight {cid}")
                 #     raw_data = self.lattica.get_block(cid)
@@ -666,9 +662,6 @@ class GradientServer:
                 # file_name = os.path.join(weight_dir, file_name)
                 # with open(file_name, "wb") as f:
                 #     f.write(raw_data)
-
-            for t in thread_pool:
-                t.join()
 
         # step4. send ipc message to update weight
         self.connection_handler.ipc_weight_refit(weight_dir)

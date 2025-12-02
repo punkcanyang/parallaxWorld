@@ -259,7 +259,7 @@ class GradientServer:
         self.stop_event = threading.Event()
 
     def build_lattica(self):
-        self.lattica = Lattica.builder().with_listen_addrs(self.host_maddrs).with_mdns(False)
+        self.lattica = Lattica.builder().with_listen_addrs(self.host_maddrs)
 
         if self.scheduler_addr is not None and self.scheduler_addr != "auto":
             if self.scheduler_addr.startswith("/"):

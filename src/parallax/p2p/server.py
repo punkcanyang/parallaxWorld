@@ -636,8 +636,7 @@ class GradientServer:
             for i in range(concurrency_loop):
                 thread_pool = []
                 for j in range(max_concurrency):
-                    cid = download_cid_set.pop()
-                    if not cid:
+                    if len(download_cid_set) == 0:
                         continue
                     logger.info(f"Start downloading refit weight {cid}")
                     download_thread = threading.Thread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)

@@ -578,10 +578,13 @@ class GradientServer:
             file_name = os.path.join(weight_dir, file_name)
             with open(file_name, "wb") as f:
                 f.write(raw_data)
+            file_size_bytes = os.path.getsize(file_name)
+            file_size_kb = file_size_bytes / 1024
+            file_size_mb = file_size_kb / 1024
             time_end_write_file = time.time()
             interval_get_block = time_end_get_block - time_begin_get_block
             interval_write_file = time_end_write_file - time_end_get_block
-            logger.info(f"Finish download cid={cid}, get_block={interval_get_block}, write_file={interval_write_file}")
+            logger.info(f"Finish download cid={cid}, file_size={file_size_mb}MB, get_block={interval_get_block}s, write_file={interval_write_file}s")
 
         message = message.result(timeout=300)
         # step1. Check weight refit trigger message

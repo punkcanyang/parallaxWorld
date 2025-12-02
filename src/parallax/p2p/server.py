@@ -602,7 +602,7 @@ class GradientServer:
         download_cid_set = set()
         layer_key_prefix = "model.layers"
         count = 0
-        max_concurrency = 6
+        max_concurrency = 3
         for key in index_map:
             is_needed = False
             if self.block_start_index == 0:

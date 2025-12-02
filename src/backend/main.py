@@ -189,4 +189,4 @@ if __name__ == "__main__":
 
     port = args.port
 
-    uvicorn.run(app, host="localhost", port=port, log_level="info", loop="uvloop")
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="debug", loop="uvloop")

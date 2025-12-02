@@ -119,6 +119,8 @@ def join_command(args):
     # Set environment variable for the subprocess
     env = os.environ.copy()
     env["SGL_ENABLE_JIT_DEEPGEMM"] = "0"
+    env["RUST_LOG"] = "INFO"
+    env["PARALLAX_LOGLEVEL"] = "DEBUG"
 
     # Build the command to run the launch.py script
     cmd = [

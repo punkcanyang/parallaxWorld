@@ -586,6 +586,8 @@ class GradientServer:
             interval_write_file = time_end_write_file - time_end_get_block
             logger.info(f"Finish download cid={cid}, file_size={file_size_mb}MB, get_block={interval_get_block}s, write_file={interval_write_file}s")
 
+        # add sleep 5s for direct connection first
+        time.sleep(5)
         message = message.result(timeout=300)
         # step1. Check weight refit trigger message
         time_stamp = message.get("time_stamp", None)
@@ -598,6 +600,8 @@ class GradientServer:
             return
         
         print("begin chat and run refit")
+        print("cid list=", cid_list)
+        print("number of cid=", len(cid_list))
         # step2. Download needed weight files from lattica
         download_cid_set = set()
         layer_key_prefix = "model.layers"

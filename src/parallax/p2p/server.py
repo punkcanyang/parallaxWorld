@@ -599,37 +599,35 @@ class GradientServer:
             # Weight already updated
             return
         
-        print("begin chat and run refit")
-        print("cid list=", cid_list)
-        print("number of cid=", len(cid_list))
-        # step2. Download needed weight files from lattica
-        download_cid_set = set()
-        layer_key_prefix = "model.layers"
-        count = 0
         max_concurrency = 6
-        for key in index_map:
-            is_needed = False
-            if self.block_start_index == 0:
-                if "embed_tokens" in key:
-                    is_needed = True
-            elif self.block_end_index == self.hidden_layers:
-                if "embed_tokens" in key:
-                    is_needed = True
-                if "model.norm" in key:
-                    is_needed = True
-                if "lm_head" in key:
-                    is_needed = True
-            if layer_key_prefix in key:
-                try:
-                    parts = key.split(".")
-                    layer_idx = int(parts[2])
-                    if self.block_start_index <= layer_idx < self.block_end_index:
-                        is_needed = True
-                except (ValueError, IndexError):
-                    continue
-            if is_needed:
-                download_cid_set.add(index_map.get(key))
-                count += 1
+        count = len(cid_list)
+        # step2. Download needed weight files from lattica
+        # download_cid_set = set()
+        # layer_key_prefix = "model.layers"
+        # count = 0
+        # for key in index_map:
+        #     is_needed = False
+        #     if self.block_start_index == 0:
+        #         if "embed_tokens" in key:
+        #             is_needed = True
+        #     elif self.block_end_index == self.hidden_layers:
+        #         if "embed_tokens" in key:
+        #             is_needed = True
+        #         if "model.norm" in key:
+        #             is_needed = True
+        #         if "lm_head" in key:
+        #             is_needed = True
+        #     if layer_key_prefix in key:
+        #         try:
+        #             parts = key.split(".")
+        #             layer_idx = int(parts[2])
+        #             if self.block_start_index <= layer_idx < self.block_end_index:
+        #                 is_needed = True
+        #         except (ValueError, IndexError):
+        #             continue
+        #     if is_needed:
+        #         download_cid_set.add(index_map.get(key))
+        #         count += 1
 
         # step3. save weight to disk
         concurrency_loop = (count - 1) // max_concurrency + 1
@@ -640,10 +638,10 @@ class GradientServer:
             for i in range(concurrency_loop):
                 thread_pool = []
                 for j in range(max_concurrency):
-                    if len(download_cid_set) == 0:
+                    if len(cid_list) == 0:
                         continue
                     else:
-                        cid = download_cid_set.pop()
+                        cid = cid_list.pop()
                     logger.info(f"Start downloading refit weight {cid}")
                     download_thread = threading.Thread(target=_download_weight_thread, args=(weight_dir, cid), daemon=True)
                     download_thread.start()

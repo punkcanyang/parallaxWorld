@@ -1,8 +1,9 @@
 """Time and tick management for the world simulation."""
 
+import threading
 import time
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Optional
 
 
 @dataclass
@@ -18,10 +19,16 @@ class SimulationClock:
         self.config = config or ClockConfig()
         self._running = False
         self._tick = 0
+        self._loop_thread: Optional[threading.Thread] = None
+        self._on_tick: Optional[Callable[[int], None]] = None
 
     @property
     def tick(self) -> int:
         return self._tick
+
+    @property
+    def is_running(self) -> bool:
+        return self._running
 
     def set_time_scale(self, scale: float) -> None:
         self.config.time_scale = max(0.1, scale)
@@ -31,12 +38,20 @@ class SimulationClock:
         self._tick += 1
         on_tick(self._tick)
 
-    def loop(self, on_tick: Callable[[int], None]) -> None:
-        """Run continuous ticks until stopped."""
+    def start(self, on_tick: Callable[[int], None]) -> None:
+        """Start continuous ticks in background until stopped."""
+        if self._running:
+            return
+        self._on_tick = on_tick
         self._running = True
+        self._loop_thread = threading.Thread(target=self._loop, daemon=True)
+        self._loop_thread.start()
+
+    def _loop(self) -> None:
         while self._running:
             start = time.time()
-            self.step(on_tick)
+            if self._on_tick is not None:
+                self.step(self._on_tick)
             elapsed = time.time() - start
             sleep_for = max(0.0, (self.config.tick_seconds / self.config.time_scale) - elapsed)
             if sleep_for:
@@ -44,4 +59,7 @@ class SimulationClock:
 
     def stop(self) -> None:
         self._running = False
+        if self._loop_thread and self._loop_thread.is_alive():
+            self._loop_thread.join(timeout=0.1)
+        self._loop_thread = None
 

@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
+from world.logs.io import append_ndjson, tail_ndjson
 
 @dataclass
 class Location:
@@ -66,6 +67,7 @@ class World:
     characters: Dict[str, Character] = field(default_factory=dict)
     memories: Dict[str, Memory] = field(default_factory=dict)
     events: Dict[str, Event] = field(default_factory=dict)
+    logs: list = field(default_factory=list)
 
 
 class WorldStore:
@@ -73,6 +75,7 @@ class WorldStore:
 
     def __init__(self, world: World):
         self.world = world
+        self.logs: list = []
 
     def add_location(self, location: Location) -> None:
         self.world.locations[location.id] = location
@@ -92,3 +95,16 @@ class WorldStore:
         self.world.epoch += 1
         return self.world.epoch
 
+    def append_log(self, entry) -> None:
+        self.logs.append(entry)
+        self.world.logs = self.logs
+        append_ndjson(entry)
+
+    def get_logs_tail(self, limit: int = 10):
+        if limit <= 0:
+            return []
+        # prefer on-disk tail to include events from previous runs
+        persisted = tail_ndjson(limit)
+        if persisted:
+            return persisted
+        return self.logs[-limit:]

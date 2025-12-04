@@ -27,3 +27,13 @@ Participants: {participants}
 For each participant, give reaction text and JSON deltas to states/traits/relationships.
     """.strip()
 
+
+def build_incident_prompt(event_type: str, participants: List[Dict]) -> str:
+    return f"""
+You are creating a concrete situation for a town simulation.
+Event type: {event_type}
+Participants: {participants}
+Give a short title and a 1-2 sentence description of a specific incident that fits this event type.
+Respond as JSON: {{"title": "...", "description": "..." }}
+Avoid meta-comments or explanations.
+""".strip()

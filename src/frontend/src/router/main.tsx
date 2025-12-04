@@ -7,10 +7,12 @@ import { useConstCallback, useRefCallback } from '../hooks';
 const PATH_SETUP = '/setup';
 const PATH_JOIN = '/join';
 const PATH_CHAT = '/chat';
+const PATH_WORLD = '/world';
 
 const PageSetup = lazy(() => import('../pages/setup'));
 const PageJoin = lazy(() => import('../pages/join'));
 const PageChat = lazy(() => import('../pages/chat'));
+const PageWorld = lazy(() => import('../pages/world'));
 
 const debugLog = (...args: any[]) => {
   console.log('%c router.tsx ', 'color: white; background: purple;', ...args);
@@ -27,6 +29,9 @@ export const MainRouter = () => {
   ] = useCluster();
 
   useEffect(() => {
+    if (pathname.startsWith(PATH_WORLD)) {
+      return;
+    }
     const lazyNavigate = (path: string) => {
       const timer = setTimeout(() => {
         debugLog('navigate to', path);
@@ -69,6 +74,14 @@ export const MainRouter = () => {
       element: (
         <Suspense fallback={<div>Loading...</div>}>
           <PageChat />
+        </Suspense>
+      ),
+    },
+    {
+      path: PATH_WORLD,
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <PageWorld />
         </Suspense>
       ),
     },

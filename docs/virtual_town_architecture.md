@@ -60,13 +60,33 @@ Keep strict JSON blocks for machine ingestion; keep free-text for surface dialog
 - Memory decay/selection: prune or lower salience to keep prompt budgets small.
 - Multi-model: allow selecting model per task (dialogue vs. planning) via config.
 
+## Frontend/UX Skeleton (plan ahead)
+- Viewports: (a) World/time controls (play/pause, time-scale slider, tick step), (b) Map/locations with character presence, (c) Event feed/log pane, (d) Character sheet modal (traits, states, memories, relationships, recent dialogues), (e) Fate rule toggles/weights (later).
+- Transport: start with REST polling for `/world`, `/events`, `/logs/tail`; evolve to Server-Sent Events or WebSocket for live feed.
+- State slices to fetch: world snapshot (lightweight), scheduled/recent events, characters list (with minimal fields), per-character detail on demand.
+- UI theming: keep UI decoupled—API-first; frontends should tolerate missing fields as features grow.
+
+## Narrative Logging & Story Capture
+- Append-only log channel for:
+  - World ticks: timestamp, tick_id, time_scale.
+  - Events: id/type/actors/location/payload/effects/status.
+  - Dialogue/monologue: participant_id, text, source_event_id, mood/intent, derived trait nudges.
+  - Fate decisions: rule_id, conditions hit, probability, enqueue result.
+- Storage options:
+  - Simple: newline-delimited JSON (NDJSON) in `src/town/logs/event.log`.
+  - Later: SQLite/Postgres with tables for events, utterances, snapshots.
+- API additions:
+  - GET `/logs/tail` (exists) — add `kind` filter (event|dialogue|all) later.
+  - Optional WebSocket/SSE `/stream/logs` for live UI feed.
+- Prompt budget helper: keep short dialogue summaries per memory entry to rehydrate context without dumping full logs.
+
 ## Files/Dirs to Start With
 - `src/town/core/time.py`: tick/time-scale management.
 - `src/town/core/state.py`: world + characters + events in-memory store; persistence adapter.
 - `src/town/fate/engine.py`: rule evaluation, event scheduling/resolution.
 - `src/town/llm/prompts.py`: prompt templates for dialogue/intent/reaction.
 - `src/town/api/routes.py`: minimal HTTP endpoints.
-- `src/town/logs/` (data): append-only event log; snapshots (json or sqlite) optional.
+- `src/town/logs/` (data): append-only log (events + dialogue), snapshots (json or sqlite) optional.
 
 ## First Increment (smallest usable slice)
 - Fixed background + 1 location.

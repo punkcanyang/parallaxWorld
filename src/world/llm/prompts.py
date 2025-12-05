@@ -26,6 +26,7 @@ Event: {event}
 Participants: {participants}
 For each participant, give reaction text and JSON deltas to states/traits/relationships.
 If participant has language, respond in that language; if force_global_language is true, respond in world.default_language. Avoid meta-thinking, only final output.
+If participant has memory_summaries, reference them for context; keep responses concise.
     """.strip()
 
 

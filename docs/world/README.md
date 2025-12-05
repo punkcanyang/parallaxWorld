@@ -41,7 +41,7 @@
 - POST `/world/characters`：创建角色。
 - GET `/world/characters`：角色列表；GET `/world/characters/{id}`：角色详情。
 - GET `/world/characters/{id}/memories?limit=`：角色记忆列表。
-- POST `/world/characters/{id}/memories/summarize?limit=`：手动合并摘要记忆。
+- POST `/world/characters/{id}/memories/summarize?limit=`：手动合并摘要记忆（默认合并 recent，保留 summary，供 prompt 使用）。
 - GET `/world/events?status=&limit=`：事件列表（可筛 status、限制数量）。
 - POST `/world/events`：创建事件。
 - POST `/world/simulate/step`：推进一 tick。

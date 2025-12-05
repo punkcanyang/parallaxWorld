@@ -6,13 +6,16 @@ from collections import deque
 from pathlib import Path
 from typing import Dict, List
 
-LOG_DIR = Path("data/worlds/default")
+from parallax_utils.file_util import get_project_root
+
+PROJECT_ROOT = get_project_root()
+LOG_DIR = PROJECT_ROOT / "data/worlds/default"
 LOG_PATH = LOG_DIR / "event.log"
 
 
 def set_log_dir(world_dir: Path) -> None:
     global LOG_DIR, LOG_PATH
-    LOG_DIR = world_dir
+    LOG_DIR = PROJECT_ROOT / world_dir
     LOG_PATH = LOG_DIR / "event.log"
 
 

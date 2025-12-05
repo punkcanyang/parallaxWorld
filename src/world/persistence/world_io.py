@@ -5,6 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Dict
 
+from parallax_utils.file_util import get_project_root
 from world.core.state import Character, Event, Location, Memory, World
 
 
@@ -65,6 +66,9 @@ def _dict_to_event(d: Dict) -> Event:
 
 
 def save_world(world: World, base_dir: Path) -> None:
+    base_dir = Path(base_dir)
+    if not base_dir.is_absolute():
+        base_dir = get_project_root() / base_dir
     base_dir.mkdir(parents=True, exist_ok=True)
     path = base_dir / "world.json"
     data = asdict(world)
@@ -75,6 +79,9 @@ def save_world(world: World, base_dir: Path) -> None:
 
 
 def load_world(world_id: str, base_dir: Path) -> World:
+    base_dir = Path(base_dir)
+    if not base_dir.is_absolute():
+        base_dir = get_project_root() / base_dir
     world_dir = base_dir / world_id
     world_dir.mkdir(parents=True, exist_ok=True)
     path = world_dir / "world.json"
@@ -113,4 +120,3 @@ def load_world(world_id: str, base_dir: Path) -> World:
     }
     world.events = {eid: _dict_to_event(ev) for eid, ev in raw.get("events", {}).items()}
     return world
-

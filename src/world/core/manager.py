@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from parallax_utils.file_util import get_project_root
 from world.core.state import WorldStore
 from world.core.time import SimulationClock
 from world.fate.engine import FateEngine, build_default_rules
@@ -11,8 +12,8 @@ from world.persistence.world_io import load_world, save_world
 
 
 class MultiWorldManager:
-    def __init__(self, base_dir: Path = Path("data/worlds")):
-        self.base_dir = base_dir
+    def __init__(self, base_dir: Path | None = None):
+        self.base_dir = base_dir or (get_project_root() / "data/worlds")
         self.current_world_id = "default"
         self.clock = SimulationClock()
         self.llm = HttpLLMClient()
@@ -62,4 +63,3 @@ class MultiWorldManager:
             "name": self.store.world.name,
             "background": self.store.world.background,
         }
-

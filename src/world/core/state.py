@@ -83,6 +83,7 @@ class WorldStore:
         self.storage_dir = storage_dir
         self.memory_limit = 100  # per character
         self.memory_summary_every_n = 5
+        self.memory_summary_max_items = 5
         self.memory_event_count: Dict[str, int] = {}
 
     def add_location(self, location: Location) -> None:
@@ -140,7 +141,9 @@ class WorldStore:
         if not mems:
             return None
         mem_payload = [{"summary": m.summary, "tags": m.tags} for m in mems]
-        summary_text = llm.summarize_memories(mem_payload, max_items=min(limit, 5))
+        summary_text = llm.summarize_memories(
+            mem_payload, max_items=min(limit, self.memory_summary_max_items)
+        )
         mem_id = str(uuid.uuid4())
         summary_memory = Memory(
             id=mem_id,

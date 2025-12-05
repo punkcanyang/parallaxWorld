@@ -101,7 +101,12 @@ def get_character(char_id: str):
     c = store.world.characters.get(char_id)
     if not c:
         raise HTTPException(status_code=404, detail="character not found")
-    return asdict(c)
+    # attach recent memory summaries for prompt use
+    mems = [store.world.memories[mid] for mid in c.memory_ids if mid in store.world.memories]
+    summaries = [m.summary for m in mems if "summary" in m.tags]
+    data = asdict(c)
+    data["memory_summaries"] = summaries[-store.memory_summary_max_items :]
+    return data
 
 
 @router.get("/events")

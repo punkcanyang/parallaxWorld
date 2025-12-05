@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 from world.logs.io import append_ndjson, tail_ndjson
-from world.persistence.world_io import save_world
 
 @dataclass
 class Location:
@@ -129,6 +128,7 @@ class WorldStore:
 
     def save(self):
         if self.storage_dir:
+            from world.persistence.world_io import save_world  # local import to avoid cycle
             save_world(self.world, self.storage_dir)
 
     def summarize_memories(self, llm, char_id: str, limit: int = 20):

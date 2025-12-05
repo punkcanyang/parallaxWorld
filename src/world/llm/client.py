@@ -115,9 +115,9 @@ class HttpLLMClient:
             import json
 
             try:
-            return json.loads(content)
-        except Exception:
-            return {"title": "incident", "description": content}
+                return json.loads(content)
+            except Exception:
+                return {"title": "incident", "description": content}
         except Exception as e:
             return {"title": "incident", "description": f"[LLM error] {e}"}
 

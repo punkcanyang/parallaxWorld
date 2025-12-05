@@ -40,6 +40,8 @@
 - POST `/world/world/time-scale`：设定 time_scale。
 - POST `/world/characters`：创建角色。
 - GET `/world/characters`：角色列表；GET `/world/characters/{id}`：角色详情。
+- GET `/world/characters/{id}/memories?limit=`：角色记忆列表。
+- POST `/world/characters/{id}/memories/summarize?limit=`：手动合并摘要记忆。
 - GET `/world/events?status=&limit=`：事件列表（可筛 status、限制数量）。
 - POST `/world/events`：创建事件。
 - POST `/world/simulate/step`：推进一 tick。
@@ -73,6 +75,14 @@
 - 代码默认：缺省值同上；可在 `HttpLLMClient` 初始化时覆盖。
 ***
 
+## 多世界管理与持久化
+- 世界文件路径：`data/worlds/<world_id>/world.json`；日志：`data/worlds/<world_id>/event.log`。
+- API：
+- `GET /world/worlds`：列出世界，返回当前 world_id。
+- `POST /world/worlds`：创建世界，body 需包含 `id`，可选 `name`、`background`、`default_language`、`force_default_language`。
+- `POST /world/worlds/select`：切换世界，body `{ "id": "<world_id>" }`。
+- 世界/角色变更会写入对应 world.json；日志按世界分目录。
+***
 ## 启动与测试
 1) 启动后端（复用 Parallax FastAPI）  
    ```bash

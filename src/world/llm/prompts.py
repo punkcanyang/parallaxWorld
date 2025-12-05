@@ -38,3 +38,12 @@ Give a short title and a 1-2 sentence description of a specific incident that fi
 Respond as JSON: {{"title": "...", "description": "..." }}
 Avoid meta-comments or explanations.
 """.strip()
+
+
+def build_memory_summary_prompt(memories: List[Dict], max_items: int = 5) -> str:
+    return f"""
+Summarize the following recent memories into a concise recap (<= {max_items} bullet points).
+Keep it short and factual, no meta thinking.
+Memories: {memories}
+Return plain text only.
+""".strip()

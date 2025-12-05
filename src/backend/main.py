@@ -20,6 +20,8 @@ from parallax_utils.ascii_anime import display_parallax_run
 from parallax_utils.file_util import get_project_root
 import uvicorn
 from world.api.routes import configure_world, router as world_router
+from world.api.worlds import configure_world_manager, router as worlds_router
+from world.core.manager import MultiWorldManager
 from world.core.state import Location, World, WorldStore
 from world.core.time import SimulationClock
 from world.fate.engine import FateEngine, build_default_rules
@@ -41,22 +43,11 @@ logger = get_logger(__name__)
 
 scheduler_manage = None
 request_handler = RequestHandler()
-world_store = WorldStore(
-    World(
-        id="world-1",
-        name="Parallax Town",
-        background="A small starter town.",
-        default_language="zh-CN",
-        force_default_language=True,
-        locations={"loc-1": Location(id="loc-1", name="Square", kind="center")},
-    )
-)
-world_clock = SimulationClock()
-world_llm = HttpLLMClient()
-world_engine = FateEngine(world_store, world_llm)
-world_engine.register_many(build_default_rules(world_store))
-configure_world(world_store, world_clock, world_engine)
+world_manager = MultiWorldManager()
+configure_world(world_manager.store, world_manager.clock, world_manager.engine, world_manager)
+configure_world_manager(world_manager)
 app.include_router(world_router, prefix="/world")
+app.include_router(worlds_router, prefix="/world")
 
 
 @app.get("/model/list")

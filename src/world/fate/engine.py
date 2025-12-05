@@ -5,7 +5,7 @@ import uuid
 from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional
 
-from world.core.state import Event, WorldStore
+from world.core.state import Event, Memory, WorldStore
 
 
 @dataclass
@@ -78,6 +78,15 @@ class FateEngine:
             applied_effects = self._apply_effects(ev)
             if applied_effects:
                 result["effects_applied"] = applied_effects
+            drift = self._apply_personality_drift(ev)
+            if drift:
+                result["personality_drift"] = drift
+            new_memories = self._record_memories(ev, dialogue)
+            if new_memories:
+                result["memories"] = new_memories
+                summaries = self._maybe_summarize_memories(ev.actors)
+                if summaries:
+                    result["memory_summaries"] = summaries
             self.store.append_log(result)
             processed.append(result)
         return processed
@@ -125,6 +134,74 @@ class FateEngine:
             applied.append({"target": target_id, "field": field, "before": before, "after": after})
 
         return applied
+
+    def _apply_personality_drift(self, event: Event) -> List[Dict]:
+        """Lightweight drift based on event type and actor pairs."""
+        if not event.actors:
+            return []
+        deltas = []
+        # simple rules
+        if event.type in ("random_encounter", "morning_greeting"):
+            delta = 0.1
+        elif event.type in ("bad_luck",):
+            delta = -0.05
+        else:
+            delta = 0.0
+
+        if delta == 0:
+            return []
+
+        actors = event.actors
+        for i, aid in enumerate(actors):
+            for bid in actors[i + 1 :]:
+                a = self.store.world.characters.get(aid)
+                b = self.store.world.characters.get(bid)
+                if not a or not b:
+                    continue
+                before_ab = a.relationships.get(bid, 0.0)
+                before_ba = b.relationships.get(aid, 0.0)
+                a.relationships[bid] = before_ab + delta
+                b.relationships[aid] = before_ba + delta
+                deltas.append(
+                    {
+                        "pair": (aid, bid),
+                        "delta": delta,
+                        "before": {"a_to_b": before_ab, "b_to_a": before_ba},
+                        "after": {"a_to_b": a.relationships[bid], "b_to_a": b.relationships[aid]},
+                    }
+                )
+        return deltas
+
+    def _record_memories(self, event: Event, dialogue: str) -> List[Dict]:
+        """Create memory entries for actors and keep summaries short."""
+        created = []
+        for aid in event.actors:
+            if aid not in self.store.world.characters:
+                continue
+            mem_id = str(uuid.uuid4())
+            summary = dialogue[:200]
+            memory = Memory(
+                id=mem_id,
+                owner_id=aid,
+                summary=summary,
+                salience=1.0,
+                tags=[event.type],
+                created_at=event.created_at,
+            )
+            self.store.add_memory(memory)
+            created.append({"owner": aid, "id": mem_id, "summary": summary})
+        return created
+
+    def _maybe_summarize_memories(self, actors: List[str]) -> List[Dict]:
+        summaries = []
+        for aid in actors:
+            count = self.store.memory_event_count.get(aid, 0)
+            if count >= self.store.memory_summary_every_n:
+                summary_mem = self.store.summarize_memories(self.llm, aid, limit=20)
+                if summary_mem:
+                    summaries.append({"owner": aid, "id": summary_mem.id, "summary": summary_mem.summary})
+        return summaries
+
 
 
 def _pick_two_characters(store: WorldStore) -> Optional[List[str]]:

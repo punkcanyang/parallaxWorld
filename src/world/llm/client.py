@@ -6,7 +6,7 @@ from typing import Dict, List
 import httpx
 
 from world.core.state import Event, WorldStore
-from world.llm.prompts import build_event_reaction_prompt, build_incident_prompt
+from world.llm.prompts import build_event_reaction_prompt, build_incident_prompt, build_memory_summary_prompt
 
 
 class HttpLLMClient:
@@ -115,8 +115,34 @@ class HttpLLMClient:
             import json
 
             try:
-                return json.loads(content)
-            except Exception:
-                return {"title": "incident", "description": content}
+            return json.loads(content)
+        except Exception:
+            return {"title": "incident", "description": content}
         except Exception as e:
             return {"title": "incident", "description": f"[LLM error] {e}"}
+
+    def summarize_memories(self, memories: List[Dict], max_items: int = 5) -> str:
+        prompt = build_memory_summary_prompt(memories, max_items)
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": prompt},
+        ]
+        payload: Dict = {
+            "messages": messages,
+            "temperature": self.temperature,
+            "stream": False,
+        }
+        if self.model:
+            payload["model"] = self.model
+        try:
+            resp = self._client.post(self.endpoint, json=payload)
+            resp.raise_for_status()
+            data = resp.json()
+            content = (
+                data.get("choices", [{}])[0]
+                .get("message", {})
+                .get("content", "")
+            )
+            return content
+        except Exception as e:
+            return f"[LLM error] {e}"

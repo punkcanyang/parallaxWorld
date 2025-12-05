@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
+from world.core.manager import MultiWorldManager
 from world.core.state import Character, Event, WorldStore
 from world.core.time import SimulationClock
 from world.fate.engine import FateEngine
@@ -14,14 +15,18 @@ router = APIRouter()
 _store: Optional[WorldStore] = None
 _clock: Optional[SimulationClock] = None
 _engine: Optional[FateEngine] = None
+_manager: Optional[MultiWorldManager] = None
 
 
-def configure_world(store: WorldStore, clock: SimulationClock, engine: FateEngine) -> None:
+def configure_world(
+    store: WorldStore, clock: SimulationClock, engine: FateEngine, manager: Optional[MultiWorldManager] = None
+) -> None:
     """Inject dependencies from the host app."""
-    global _store, _clock, _engine
+    global _store, _clock, _engine, _manager
     _store = store
     _clock = clock
     _engine = engine
+    _manager = manager
 
 
 def _require_store() -> WorldStore:
@@ -40,6 +45,12 @@ def _require_engine() -> FateEngine:
     if _engine is None:
         raise HTTPException(status_code=500, detail="FateEngine not configured")
     return _engine
+
+
+def _require_manager() -> MultiWorldManager:
+    if _manager is None:
+        raise HTTPException(status_code=500, detail="World manager not configured")
+    return _manager
 
 
 @router.get("/world")
@@ -76,6 +87,7 @@ def create_character(payload: Dict[str, Any]):
         location_id=payload.get("location_id"),
     )
     store.add_character(character)
+    store.save()
     return {"created": asdict(character)}
 
 @router.get("/characters")
@@ -133,6 +145,7 @@ def simulate_step():
         store.advance_epoch()
         engine.on_tick(tick)
         engine.process_due_events(tick)
+        store.save()
 
     clock.step(_on_tick)
     return {"tick": clock.tick, "epoch": store.world.epoch}
@@ -167,3 +180,29 @@ def logs_tail(limit: int = 10, kind: str | None = None):
     if kind:
         logs = [l for l in logs if l.get("type") == kind]
     return {"logs": logs, "limit": limit, "kind": kind}
+
+
+@router.get("/characters/{char_id}/memories")
+def get_memories(char_id: str, limit: int = Query(20, ge=1, le=200)):
+    store = _require_store()
+    c = store.world.characters.get(char_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="character not found")
+    mems = [store.world.memories[mid] for mid in c.memory_ids if mid in store.world.memories]
+    mems = mems[-limit:]
+    return {"memories": [asdict(m) for m in mems], "limit": limit}
+
+
+@router.post("/characters/{char_id}/memories/summarize")
+def summarize_memories(char_id: str, limit: int = Query(20, ge=1, le=200)):
+    store = _require_store()
+    mgr = _manager  # optional manager for llm
+    if char_id not in store.world.characters:
+        raise HTTPException(status_code=404, detail="character not found")
+    llm = mgr.llm if mgr else None
+    if llm is None:
+        raise HTTPException(status_code=500, detail="LLM not configured")
+    summary_mem = store.summarize_memories(llm, char_id, limit=limit)
+    if summary_mem is None:
+        return {"summary": None, "status": "no memories"}
+    return {"summary": asdict(summary_mem)}

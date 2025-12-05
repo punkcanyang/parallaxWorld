@@ -25,6 +25,7 @@ def build_event_reaction_prompt(event: Dict, participants: List[Dict]) -> str:
 Event: {event}
 Participants: {participants}
 For each participant, give reaction text and JSON deltas to states/traits/relationships.
+If participant has language, respond in that language; if force_global_language is true, respond in world.default_language. Avoid meta-thinking, only final output.
     """.strip()
 
 

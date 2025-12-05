@@ -64,6 +64,8 @@ def create_character(payload: Dict[str, Any]):
         name=payload.get("name", "unknown"),
         age=int(payload.get("age", 18)),
         role=payload.get("role", "villager"),
+        language=payload.get("language", store.world.default_language),
+        comprehension=payload.get("comprehension", {}),
         attributes=payload.get("attributes", {}),
         traits=payload.get("traits", {}),
         states=payload.get("states", {}),

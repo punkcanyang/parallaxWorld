@@ -46,6 +46,8 @@ world_store = WorldStore(
         id="world-1",
         name="Parallax Town",
         background="A small starter town.",
+        default_language="zh-CN",
+        force_default_language=True,
         locations={"loc-1": Location(id="loc-1", name="Square", kind="center")},
     )
 )

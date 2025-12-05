@@ -31,6 +31,8 @@ class Character:
     name: str
     age: int
     role: str
+    language: str = "zh-CN"  # preferred output language
+    comprehension: Dict[str, float] = field(default_factory=dict)  # language -> confidence 0-1
     attributes: Dict[str, float] = field(default_factory=dict)
     traits: Dict[str, float] = field(default_factory=dict)
     states: Dict[str, float] = field(default_factory=dict)
@@ -62,6 +64,8 @@ class World:
     background: str
     epoch: int = 0
     time_scale: float = 1.0
+    default_language: str = "zh-CN"
+    force_default_language: bool = True  # if True, final output should be in default_language
     env_state: Dict = field(default_factory=dict)
     locations: Dict[str, Location] = field(default_factory=dict)
     characters: Dict[str, Character] = field(default_factory=dict)

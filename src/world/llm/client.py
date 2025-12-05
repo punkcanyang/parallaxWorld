@@ -39,12 +39,20 @@ class HttpLLMClient:
                     {
                         "id": ch.id,
                         "name": ch.name,
+                        "language": ch.language,
+                        "comprehension": ch.comprehension,
                         "traits": ch.traits,
                         "states": ch.states,
                     }
                 )
         prompt = build_event_reaction_prompt(
-            {"type": event.type, "location_id": event.location_id, "payload": event.payload},
+            {
+                "type": event.type,
+                "location_id": event.location_id,
+                "payload": event.payload,
+                "world_default_language": getattr(store.world, "default_language", "zh-CN"),
+                "force_default_language": getattr(store.world, "force_default_language", True),
+            },
             participants,
         )
 

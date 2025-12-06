@@ -6,7 +6,12 @@ from typing import Dict, List
 import httpx
 
 from world.core.state import Event, WorldStore
-from world.llm.prompts import build_event_reaction_prompt, build_incident_prompt, build_memory_summary_prompt
+from world.llm.prompts import (
+    build_event_reaction_prompt,
+    build_incident_prompt,
+    build_memory_summary_prompt,
+    build_scene_prompt,
+)
 
 
 class HttpLLMClient:
@@ -51,6 +56,20 @@ class HttpLLMClient:
             if mem and "summary" in mem.tags:
                 summaries.append(mem.summary)
         return summaries[-limit:]
+
+    def _character_brief(self, store: WorldStore, actor_id: str) -> Dict:
+        ch = store.world.characters.get(actor_id)
+        if not ch:
+            return {}
+        return {
+            "id": ch.id,
+            "name": ch.name,
+            "role": ch.role,
+            "language": ch.language,
+            "traits": ch.traits,
+            "states": ch.states,
+            "memory_summaries": self._memory_summaries_for_actor(store, actor_id),
+        }
 
     def describe_event(self, event: Event, store: WorldStore) -> str:
         participants: List[dict] = []
@@ -210,3 +229,38 @@ class HttpLLMClient:
             return cleaned if cleaned else "（他们简单交流了几句。）"
         except Exception:
             return "（他们简单交流了几句。）"
+
+    def generate_scene(self, background: str, tags: List[str], store: WorldStore, actor_ids: List[str]) -> Dict:
+        participants = [self._character_brief(store, aid) for aid in actor_ids]
+        prompt = build_scene_prompt(background, tags, participants)
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": prompt},
+        ]
+        payload: Dict = {
+            "messages": messages,
+            "temperature": self.temperature,
+            "stream": False,
+            "stop": self.stop_tokens,
+            "max_tokens": self.max_tokens,
+        }
+        if self.model:
+            payload["model"] = self.model
+        try:
+            resp = self._client.post(self.endpoint, json=payload)
+            resp.raise_for_status()
+            data = resp.json()
+            content = (
+                data.get("choices", [{}])[0]
+                .get("message", {})
+                .get("content", "")
+            )
+            import json
+
+            try:
+                return json.loads(self._strip_think(content))
+            except Exception:
+                cleaned = self._strip_think(content)
+                return {"title": cleaned or "新场景", "background_tags": tags, "max_turns": 6}
+        except Exception:
+            return {"title": "新场景", "background_tags": tags, "max_turns": 6}

@@ -1,15 +1,17 @@
 """Minimal API for the world simulation."""
 
+import random
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Body, HTTPException, Query
 
 from world.core.manager import MultiWorldManager
 from world.core.state import Character, Event, WorldStore
 from world.core.time import SimulationClock
 from world.fate.engine import FateEngine
 from world.core.scene import Scene, new_scene_id
+from world.core.timeline import Timeline, new_timeline_id
 from world.logs.story_io import append_story
 
 router = APIRouter()
@@ -217,7 +219,7 @@ def summarize_memories(char_id: str, limit: int = Query(20, ge=1, le=200)):
 
 # Scene / conversation APIs
 @router.post("/scenes")
-def create_scene(payload: Dict[str, Any]):
+def create_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     store = _require_store()
     mgr = _require_manager()
     scene_id = payload.get("id") or new_scene_id()
@@ -262,8 +264,12 @@ def step_scene(scene_id: str):
         f"角色: {speaker.name} ({speaker.role}) 性格: {speaker.traits} 状态: {speaker.states}\n"
         f"最近对话:\n{history_text}\n"
         f"{speaker.name} 现在发言/想法（用{speaker.language}，简短，无思维链）。"
+        f"避免重复他人或自己的台词，补充新的信息或情绪。"
     )
     utterance = mgr.llm.generate_dialogue(prompt)
+    recent_texts = {t.utterance for t in recent}
+    if utterance in recent_texts:
+        utterance = f"{speaker.name}换了个角度补充道：{utterance}"
     scene.add_turn(speaker_id, utterance)
     append_story(mgr.base_dir / mgr.current_world_id, scene_id, {"speaker": speaker.name, "utterance": utterance})
     return {"scene_id": scene_id, "status": scene.status, "turn": {"speaker": speaker_id, "utterance": utterance}}
@@ -280,4 +286,232 @@ def scene_log(scene_id: str):
         "title": scene.title,
         "status": scene.status,
         "turns": [asdict(t) for t in scene.turns],
+    }
+
+
+@router.post("/scenes/auto")
+def auto_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
+    store = _require_store()
+    mgr = _require_manager()
+    actor_ids = payload.get("participants") or []
+    if not actor_ids:
+        actor_ids = list(store.world.characters.keys())
+        if len(actor_ids) >= 3:
+            actor_ids = random.sample(actor_ids, 3)
+        elif len(actor_ids) == 2:
+            pass
+    if len(actor_ids) < 2:
+        raise HTTPException(status_code=400, detail="at least 2 participants required")
+    background = store.world.background
+    tags = payload.get("background_tags", [])
+    gen = mgr.llm.generate_scene(background, tags, store, actor_ids)
+    scene_id = new_scene_id()
+    title = gen.get("title", f"Scene {scene_id}")
+    location_id = gen.get("location_id") or payload.get("location_id")
+    max_turns = gen.get("max_turns", 6)
+    bg_tags = gen.get("background_tags", tags)
+    scene = Scene(
+        id=scene_id,
+        title=title,
+        participants=actor_ids,
+        location_id=location_id,
+        background_tags=bg_tags if isinstance(bg_tags, list) else tags,
+        max_turns=max_turns if isinstance(max_turns, int) else 6,
+    )
+    store.add_scene(scene)
+    return {"scene_id": scene_id, "title": scene.title, "location_id": scene.location_id, "background_tags": scene.background_tags, "max_turns": scene.max_turns}
+
+
+@router.post("/scenes/auto_run")
+def auto_run_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
+    """Auto-generate a scene and run all turns until完成或 max_turns。"""
+    store = _require_store()
+    mgr = _require_manager()
+    actor_ids = payload.get("participants") or []
+    if not actor_ids:
+        actor_ids = list(store.world.characters.keys())
+        if len(actor_ids) >= 3:
+            actor_ids = random.sample(actor_ids, 3)
+        elif len(actor_ids) == 2:
+            pass
+    if len(actor_ids) < 2:
+        raise HTTPException(status_code=400, detail="at least 2 participants required")
+    background = store.world.background
+    tags = payload.get("background_tags", [])
+    gen = mgr.llm.generate_scene(background, tags, store, actor_ids)
+    scene_id = new_scene_id()
+    title = gen.get("title", f"Scene {scene_id}")
+    location_id = gen.get("location_id") or payload.get("location_id")
+    max_turns = gen.get("max_turns", 6)
+    bg_tags = gen.get("background_tags", tags)
+    scene = Scene(
+        id=scene_id,
+        title=title,
+        participants=actor_ids,
+        location_id=location_id,
+        background_tags=bg_tags if isinstance(bg_tags, list) else tags,
+        max_turns=max_turns if isinstance(max_turns, int) else 6,
+    )
+    store.add_scene(scene)
+
+    # run turns
+    while scene.status == "active":
+        speaker_id = scene.next_speaker()
+        speaker = store.world.characters.get(speaker_id)
+        if not speaker:
+            scene.status = "completed"
+            break
+        recent = scene.turns[-5:]
+        history_text = "\n".join([f"{t.speaker}: {t.utterance}" for t in recent])
+        background = store.world.background
+        tags_text = ", ".join(scene.background_tags)
+        prompt = (
+            f"世界背景: {background}; 标签: {tags_text}\n"
+            f"场景: {scene.title} @ {scene.location_id}\n"
+            f"角色: {speaker.name} ({speaker.role}) 性格: {speaker.traits} 状态: {speaker.states}\n"
+            f"最近对话:\n{history_text}\n"
+            f"{speaker.name} 现在发言/想法（用{speaker.language}，简短，无思维链）。"
+        )
+        utterance = mgr.llm.generate_dialogue(prompt)
+        scene.add_turn(speaker_id, utterance)
+        append_story(mgr.base_dir / mgr.current_world_id, scene_id, {"speaker": speaker.name, "utterance": utterance})
+
+    return {
+        "scene_id": scene_id,
+        "title": scene.title,
+        "status": scene.status,
+        "turns": [asdict(t) for t in scene.turns],
+    }
+
+
+# Timeline APIs
+@router.post("/timelines/auto")
+def auto_timeline(payload: Dict[str, Any] = Body(default_factory=dict)):
+    store = _require_store()
+    mgr = _require_manager()
+    actor_ids = payload.get("participants") or []
+    if not actor_ids:
+        actor_ids = list(store.world.characters.keys())
+        if len(actor_ids) >= 3:
+            actor_ids = random.sample(actor_ids, 3)
+        elif len(actor_ids) == 2:
+            pass
+    if len(actor_ids) < 2:
+        raise HTTPException(status_code=400, detail="at least 2 participants required")
+
+    background = store.world.background
+    tags = payload.get("background_tags", [])
+    gen = mgr.llm.generate_scene(background, tags, store, actor_ids)
+    scene_id = new_scene_id()
+    scene = Scene(
+        id=scene_id,
+        title=gen.get("title", f"Scene {scene_id}"),
+        participants=actor_ids,
+        location_id=gen.get("location_id") or payload.get("location_id"),
+        background_tags=gen.get("background_tags", tags) if isinstance(gen.get("background_tags"), list) else tags,
+        max_turns=gen.get("max_turns", 6) if isinstance(gen.get("max_turns"), int) else 6,
+    )
+    store.add_scene(scene)
+    timeline_id = new_timeline_id()
+    timeline = Timeline(
+        id=timeline_id,
+        title=payload.get("title") or scene.title,
+        scenes=[scene_id],
+        current_scene_idx=0,
+        status="active",
+        participants=actor_ids,
+        background_tags=scene.background_tags,
+    )
+    store.add_timeline(timeline)
+    return {"timeline_id": timeline_id, "scene_id": scene_id, "title": timeline.title}
+
+
+@router.post("/timelines/step")
+def step_timeline(payload: Dict[str, Any] = Body(default_factory=dict)):
+    store = _require_store()
+    mgr = _require_manager()
+    timeline_id = payload.get("timeline_id")
+    timeline = None
+    if timeline_id:
+        timeline = store.timelines.get(timeline_id) or store.world.timelines.get(timeline_id)
+    if timeline is None:
+        timeline = store.get_active_timeline()
+    if timeline is None:
+        # auto create if none
+        auto_resp = auto_timeline({})
+        timeline = store.timelines.get(auto_resp["timeline_id"])
+    if timeline is None:
+        raise HTTPException(status_code=500, detail="timeline not found or failed to create")
+    if timeline.status == "completed":
+        return {"timeline_id": timeline.id, "status": "completed"}
+
+    # get current scene
+    if timeline.current_scene_idx >= len(timeline.scenes):
+        timeline.status = "completed"
+        return {"timeline_id": timeline.id, "status": "completed"}
+
+    scene_id = timeline.scenes[timeline.current_scene_idx]
+    scene = store.get_scene(scene_id)
+    if scene is None:
+        raise HTTPException(status_code=404, detail="scene not found")
+
+    # if scene completed, maybe generate next or finish
+    if scene.status == "completed":
+        if len(timeline.scenes) < timeline.max_scenes:
+            # generate next scene with same actors
+            gen = mgr.llm.generate_scene(store.world.background, timeline.background_tags, store, timeline.participants)
+            new_scene = Scene(
+                id=new_scene_id(),
+                title=gen.get("title", f"Scene {len(timeline.scenes)+1}"),
+                participants=timeline.participants,
+                location_id=gen.get("location_id"),
+                background_tags=gen.get("background_tags", timeline.background_tags),
+                max_turns=gen.get("max_turns", 6) if isinstance(gen.get("max_turns"), int) else 6,
+            )
+            store.add_scene(new_scene)
+            timeline.scenes.append(new_scene.id)
+            timeline.current_scene_idx += 1
+            scene = new_scene
+        else:
+            timeline.status = "completed"
+            return {"timeline_id": timeline.id, "status": "completed"}
+
+    # run one turn in current scene
+    speaker_id = scene.next_speaker()
+    speaker = store.world.characters.get(speaker_id)
+    if not speaker:
+        scene.status = "completed"
+        return {"timeline_id": timeline.id, "status": "scene missing speaker"}
+
+    recent = scene.turns[-5:]
+    history_text = "\n".join([f"{t.speaker}: {t.utterance}" for t in recent])
+    background = store.world.background
+    tags_text = ", ".join(scene.background_tags)
+    prompt = (
+        f"世界背景: {background}; 标签: {tags_text}\n"
+        f"场景: {scene.title} @ {scene.location_id}\n"
+        f"角色: {speaker.name} ({speaker.role}) 性格: {speaker.traits} 状态: {speaker.states}\n"
+        f"最近对话:\n{history_text}\n"
+        f"{speaker.name} 现在发言/想法（用{speaker.language}，简短，无思维链）。避免重复他人或自己的台词，补充新的信息或情绪。"
+    )
+    utterance = mgr.llm.generate_dialogue(prompt)
+    recent_texts = {t.utterance for t in recent}
+    if utterance in recent_texts:
+        utterance = f"{speaker.name}换了个角度补充道：{utterance}"
+    scene.add_turn(speaker_id, utterance)
+    append_story(mgr.base_dir / mgr.current_world_id, scene.id, {"speaker": speaker.name, "utterance": utterance})
+
+    # if scene done, maybe move to next index
+    if scene.status == "completed":
+        timeline.current_scene_idx += 1
+        if timeline.current_scene_idx >= len(timeline.scenes):
+            timeline.status = "completed"
+
+    return {
+        "timeline_id": timeline.id,
+        "status": timeline.status,
+        "scene_id": scene.id,
+        "scene_status": scene.status,
+        "turn": {"speaker": speaker_id, "utterance": utterance},
+        "turn_count": len(scene.turns),
     }

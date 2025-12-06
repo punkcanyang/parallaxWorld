@@ -49,3 +49,20 @@ Keep it short and factual, no meta thinking.
 Memories: {memories}
 Return plain text only.
 """.strip()
+
+
+def build_scene_prompt(background: str, tags: List[str], participants: List[Dict]) -> str:
+    return f"""
+你是故事编剧，需要在给定世界背景下生成一个对话场景。请用简体中文，避免思维链，只给最终结果。
+世界背景: {background}
+背景标签: {tags}
+参与角色(含性格/状态/记忆摘要): {participants}
+请输出 JSON：
+{{
+  "title": "场景标题",
+  "location_id": "可选地点ID或描述",
+  "background_tags": ["..."],
+  "max_turns": 6
+}}
+要求：场景设定应匹配角色和背景，标题简洁，max_turns 不宜过大。
+""".strip()

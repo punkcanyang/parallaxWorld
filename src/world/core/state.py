@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 import uuid
 from world.logs.io import append_ndjson, tail_ndjson
 from world.core.scene import Scene
+from world.core.timeline import Timeline
 
 @dataclass
 class Location:
@@ -75,6 +76,7 @@ class World:
     events: Dict[str, Event] = field(default_factory=dict)
     logs: list = field(default_factory=list)
     scenes: Dict[str, Scene] = field(default_factory=dict)
+    timelines: Dict[str, Timeline] = field(default_factory=dict)
 
 
 class WorldStore:
@@ -89,6 +91,7 @@ class WorldStore:
         self.memory_summary_max_items = 5
         self.memory_event_count: Dict[str, int] = {}
         self.scenes: Dict[str, Scene] = {}
+        self.timelines: Dict[str, Timeline] = {}
 
     def add_location(self, location: Location) -> None:
         self.world.locations[location.id] = location
@@ -167,3 +170,13 @@ class WorldStore:
 
     def get_scene(self, scene_id: str) -> Optional[Scene]:
         return self.scenes.get(scene_id) or self.world.scenes.get(scene_id)
+
+    def add_timeline(self, timeline: Timeline):
+        self.timelines[timeline.id] = timeline
+        self.world.timelines[timeline.id] = timeline
+
+    def get_active_timeline(self) -> Optional[Timeline]:
+        for tl in self.timelines.values():
+            if tl.status == "active":
+                return tl
+        return None

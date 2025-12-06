@@ -6,7 +6,9 @@ from pathlib import Path
 from typing import Dict
 
 from parallax_utils.file_util import get_project_root
+from world.core.scene import Scene
 from world.core.state import Character, Event, Location, Memory, World
+from world.core.timeline import Timeline
 
 
 def _dict_to_location(d: Dict) -> Location:
@@ -74,6 +76,7 @@ def save_world(world: World, base_dir: Path) -> None:
     data = asdict(world)
     # logs can be large; don't persist runtime logs in world snapshot
     data.pop("logs", None)
+    data.pop("timelines", None)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -119,4 +122,5 @@ def load_world(world_id: str, base_dir: Path) -> World:
         mid: _dict_to_memory(mem) for mid, mem in raw.get("memories", {}).items()
     }
     world.events = {eid: _dict_to_event(ev) for eid, ev in raw.get("events", {}).items()}
+    # scenes/timelines currently not persisted fully; keep empty for now
     return world

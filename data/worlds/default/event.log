@@ -63,3 +63,6 @@
 [1764955056] tick=4 type=random_encounter | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
 [1764955056] tick=4 type=bad_luck | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
 [1764955077] tick=9 type=morning_greeting | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
+[1765016056] tick=1 type=random_encounter | incident=incident | desc={"title": "神秘邂逅", "description": "张伟在城镇广场发现一个发光的古物，李明则在李明的笔记本上发现了一段被遗忘的日记"} | dialogue={"reaction": "张伟发现发光古物，感到好奇。", "state": {"c3": {"comprehension": {}, "traits": {}, "states": []}}, "relationship": {"c3": {"relationships": []}}}
+{"reaction": "李明发现被遗忘的日记，感到好奇。", "state": {"c1": {"comprehension": {}, "traits": {}, "states": []}}, "relationship": {"c1": {"relationships": []}}}
+[1765016081] tick=1 type=bad_luck | incident=incident | desc={"title": "王芳的意外遭遇", "description": "王芳在镇上偶遇神秘事件，导致家庭陷入困境"} | dialogue={'reaction': '王芳在镇上偶遇神秘事件，导致家庭陷入困境', 'state': {'bad_luck': '1'}, 'traits': {}, 'relationships': []}

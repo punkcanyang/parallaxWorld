@@ -18,6 +18,9 @@ Parallax 是 Gradient 开发的去中心化推理引擎，让你在分布式节�
   - 人格漂移与记忆：事件影响关系，自动记录记忆并可合并摘要。
   - 持久化与多世界：`data/worlds/<world_id>/world.json` + `event.log`，支持创建/列出/切换世界。
   - 语言设定：世界默认语言、角色语言/理解力，输出可强制全局语言或按角色语言。
+  - 使用文件：[docs/world/README.md](docs/world/README.md)
+  - 
+  - 
 
 ## 快速开始
 - 安装指南：[docs/user_guide/install.md](docs/user_guide/install.md)

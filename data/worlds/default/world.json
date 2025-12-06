@@ -1,0 +1,1264 @@
+{
+  "id": "default",
+  "name": "default",
+  "background": "A new world",
+  "epoch": 15,
+  "time_scale": 1.0,
+  "default_language": "zh-CN",
+  "force_default_language": true,
+  "env_state": {},
+  "locations": {
+    "loc-1": {
+      "id": "loc-1",
+      "name": "Square",
+      "kind": "center",
+      "connections": [],
+      "tags": []
+    }
+  },
+  "characters": {
+    "c1": {
+      "id": "c1",
+      "name": "李明",
+      "age": 32,
+      "role": "工程师",
+      "language": "zh-CN",
+      "comprehension": {},
+      "attributes": {},
+      "traits": {},
+      "states": {},
+      "relationships": {
+        "c4": 0.30000000000000004,
+        "c5": 0.1,
+        "c3": 0.2
+      },
+      "memory_ids": [
+        "3b2de8a5-fc94-435c-a752-a9294d8c6b04",
+        "23e93636-52c3-4cb1-8fa3-636b52ccd0c1",
+        "d78614bc-05d5-4370-835c-17d3b3cdda35",
+        "f3f44262-b8f2-4d43-bf9d-85b6407b846d",
+        "c91dcb46-22c9-48b5-8e23-9a74e99cc223",
+        "a4357a6b-f003-4ce6-894d-d02f50727de2",
+        "107bee77-858f-44ee-96ff-c352de50c05a",
+        "5c864470-91f1-4d4c-9bac-d438d5aa8237",
+        "d12f4353-4b19-4e84-a2ac-40f74841e62a",
+        "b24298ca-3d94-457b-bb76-f0be60ec2642"
+      ],
+      "goals": [],
+      "flags": {
+        "alive": true
+      },
+      "location_id": "loc-1"
+    },
+    "c2": {
+      "id": "c2",
+      "name": "王芳",
+      "age": 30,
+      "role": "教师",
+      "language": "zh-CN",
+      "comprehension": {},
+      "attributes": {},
+      "traits": {},
+      "states": {},
+      "relationships": {
+        "c3": 0.1,
+        "c4": 0.1,
+        "c5": 0.1
+      },
+      "memory_ids": [
+        "8f0a66ad-a25c-44ab-8b0f-5a44331c5866",
+        "b0fd5776-3f7f-4c22-bdf7-e0b7ef453018",
+        "4795b210-df9a-432f-a761-0a643531c874",
+        "31d130c4-996a-4157-80b4-6583048c2b71"
+      ],
+      "goals": [],
+      "flags": {
+        "alive": true
+      },
+      "location_id": "loc-1"
+    },
+    "c3": {
+      "id": "c3",
+      "name": "张伟",
+      "age": 28,
+      "role": "医生",
+      "language": "zh-CN",
+      "comprehension": {},
+      "attributes": {},
+      "traits": {},
+      "states": {},
+      "relationships": {
+        "c2": 0.1,
+        "c4": 0.30000000000000004,
+        "c1": 0.2
+      },
+      "memory_ids": [
+        "814eb6e1-1cb5-4164-9194-f9f245c9856e",
+        "9bbcbab9-2cca-4521-978e-5498f8142ba6",
+        "7c6ed84e-0255-42fc-a885-5e6b934eb32b",
+        "c2a00fc1-32f6-49c7-9570-65b2f057ef09",
+        "a85d3ef2-70eb-45aa-a9a6-3d1748344c7b",
+        "9821e048-f65a-4394-9c54-a740788ea268",
+        "f932b44d-67cb-4032-bda8-6e1a1598bc5f"
+      ],
+      "goals": [],
+      "flags": {
+        "alive": true
+      },
+      "location_id": "loc-1"
+    },
+    "c4": {
+      "id": "c4",
+      "name": "刘静",
+      "age": 27,
+      "role": "设计师",
+      "language": "zh-CN",
+      "comprehension": {},
+      "attributes": {},
+      "traits": {},
+      "states": {},
+      "relationships": {
+        "c1": 0.30000000000000004,
+        "c3": 0.30000000000000004,
+        "c5": 0.30000000000000004,
+        "c2": 0.1
+      },
+      "memory_ids": [
+        "1378543d-0a19-4c75-a8f2-566ee93f2198",
+        "e5582f25-69de-4158-8399-32c25503b91a",
+        "a55889d5-02ff-4dca-8250-bde829559e33",
+        "bd8a5b9d-365d-4252-b1e7-f21c15849588",
+        "7fbc4458-ad2b-4f34-bef4-bdbac45c365d",
+        "e624c63f-9042-48d7-8446-5db315d2fdec",
+        "8ed7f2f8-1796-4284-90ec-90e5be494abe",
+        "71e0843c-5d9e-4de1-ae28-51229fe57a35",
+        "1e423d70-af2f-478e-b200-519d5fcfdfda",
+        "6b09d884-0120-406a-9671-96bb715aecc4",
+        "f55b9b63-326d-489e-9aff-b6ef02a2abd0",
+        "7f41801e-8c01-41c2-96e4-74e95726d84f"
+      ],
+      "goals": [],
+      "flags": {
+        "alive": true
+      },
+      "location_id": "loc-1"
+    },
+    "c5": {
+      "id": "c5",
+      "name": "陈刚",
+      "age": 35,
+      "role": "厨师",
+      "language": "zh-CN",
+      "comprehension": {},
+      "attributes": {},
+      "traits": {},
+      "states": {},
+      "relationships": {
+        "c4": 0.30000000000000004,
+        "c1": 0.1,
+        "c2": 0.1
+      },
+      "memory_ids": [
+        "24ab96dd-4b76-4207-8f70-1e106488ee13",
+        "5e0f9842-7b10-45b8-ac96-9a9769c8bdb8",
+        "ed38c48c-4332-43fa-8df3-55004f1d259a",
+        "c82ef2b6-068c-4ad2-9a1e-e14437484b77",
+        "dd6c05c8-9e15-4417-8dab-d1afae4b05c4",
+        "add4f170-559b-478a-b825-828414d6d21f",
+        "cd7e1ddd-6616-4e9b-ba09-4d9270e04fd8",
+        "d5800cf2-9a63-4651-a905-2c248192b3b6",
+        "c345a2d6-b63b-48ec-9206-e9ad032b24f6",
+        "878ba7d4-0a1e-489a-8e94-a21cd523c8df",
+        "280d902b-294b-4d7d-8c72-b5703658ae57"
+      ],
+      "goals": [],
+      "flags": {
+        "alive": true
+      },
+      "location_id": "loc-1"
+    }
+  },
+  "memories": {
+    "1378543d-0a19-4c75-a8f2-566ee93f2198": {
+      "id": "1378543d-0a19-4c75-a8f2-566ee93f2198",
+      "owner_id": "c4",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "3b2de8a5-fc94-435c-a752-a9294d8c6b04": {
+      "id": "3b2de8a5-fc94-435c-a752-a9294d8c6b04",
+      "owner_id": "c1",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "23e93636-52c3-4cb1-8fa3-636b52ccd0c1": {
+      "id": "23e93636-52c3-4cb1-8fa3-636b52ccd0c1",
+      "owner_id": "c1",
+      "summary": "<think>\n好的，我现在需要处理用户的请求，生成符合要求的模拟事件。首先，用户提供的事件信息包括类型是bad_luck，地点是loc-1，payload包含incident的title和description。用户要求生成一个简短的标题和描述，参与者是李明。\n\n首先，标题需要简洁，可能用“李明的意外失踪”比较合适。描述部分要具体，比如李明在镇上遇到意外，导致失踪，引发居民担忧。需要确保描述在1",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "8f0a66ad-a25c-44ab-8b0f-5a44331c5866": {
+      "id": "8f0a66ad-a25c-44ab-8b0f-5a44331c5866",
+      "owner_id": "c2",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "814eb6e1-1cb5-4164-9194-f9f245c9856e": {
+      "id": "814eb6e1-1cb5-4164-9194-f9f245c9856e",
+      "owner_id": "c3",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "24ab96dd-4b76-4207-8f70-1e106488ee13": {
+      "id": "24ab96dd-4b76-4207-8f70-1e106488ee13",
+      "owner_id": "c5",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "e5582f25-69de-4158-8399-32c25503b91a": {
+      "id": "e5582f25-69de-4158-8399-32c25503b91a",
+      "owner_id": "c4",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "9bbcbab9-2cca-4521-978e-5498f8142ba6": {
+      "id": "9bbcbab9-2cca-4521-978e-5498f8142ba6",
+      "owner_id": "c3",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "5e0f9842-7b10-45b8-ac96-9a9769c8bdb8": {
+      "id": "5e0f9842-7b10-45b8-ac96-9a9769c8bdb8",
+      "owner_id": "c5",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "ed38c48c-4332-43fa-8df3-55004f1d259a": {
+      "id": "ed38c48c-4332-43fa-8df3-55004f1d259a",
+      "owner_id": "c5",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "a55889d5-02ff-4dca-8250-bde829559e33": {
+      "id": "a55889d5-02ff-4dca-8250-bde829559e33",
+      "owner_id": "c4",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "bd8a5b9d-365d-4252-b1e7-f21c15849588": {
+      "id": "bd8a5b9d-365d-4252-b1e7-f21c15849588",
+      "owner_id": "c4",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "7c6ed84e-0255-42fc-a885-5e6b934eb32b": {
+      "id": "7c6ed84e-0255-42fc-a885-5e6b934eb32b",
+      "owner_id": "c3",
+      "summary": "<think>\n好的，我现在需要处理用户的请求，生成符合要求的JSON响应。首先，用户提供的事件信息包括类型、地点、payload中的incident，以及参与者张伟和刘静的信息。用户还要求生成标题和描述，保持记忆摘要，确保JSON格式正确。\n\n首先，标题已经确定为“意外邂逅”，描述部分需要简短，可能涉及两人在废弃仓库中的互动。用户提到要避免元信息，所以直接使用标题和描述即可。接下来，检查JSON",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "7fbc4458-ad2b-4f34-bef4-bdbac45c365d": {
+      "id": "7fbc4458-ad2b-4f34-bef4-bdbac45c365d",
+      "owner_id": "c4",
+      "summary": "<think>\n好的，我现在需要处理用户的请求，生成符合要求的JSON响应。首先，用户提供的事件信息包括类型、地点、payload中的incident，以及参与者张伟和刘静的信息。用户还要求生成标题和描述，保持记忆摘要，确保JSON格式正确。\n\n首先，标题已经确定为“意外邂逅”，描述部分需要简短，可能涉及两人在废弃仓库中的互动。用户提到要避免元信息，所以直接使用标题和描述即可。接下来，检查JSON",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "d78614bc-05d5-4370-835c-17d3b3cdda35": {
+      "id": "d78614bc-05d5-4370-835c-17d3b3cdda35",
+      "owner_id": "c1",
+      "summary": "<think>\n好的，我现在需要处理用户的请求，生成符合要求的JSON响应。首先，用户提供的事件信息包括类型是bad_luck，地点是loc-1，payload包含incident的title和description。用户还要求生成一个简短的标题和描述，不超过1-2句话，并且用JSON格式。同时，需要检查是否符合JSON语法，确保没有多余的内容。\n\n首先，标题和描述需要简洁。用户提供的示例标题是“",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "e624c63f-9042-48d7-8446-5db315d2fdec": {
+      "id": "e624c63f-9042-48d7-8446-5db315d2fdec",
+      "owner_id": "c4",
+      "summary": "{\"reaction\": \"刘静感到好奇，王芳则主动与她互动。\", \"state\": {\"c4\": {\"traits\": {}}, \"c2\": {\"traits\": {}}}, \"relationship\": {\"c4\": {\"loc-1\": \"loc-1\"}, \"c2\": {\"loc-1\": \"loc-1\"}}}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "b0fd5776-3f7f-4c22-bdf7-e0b7ef453018": {
+      "id": "b0fd5776-3f7f-4c22-bdf7-e0b7ef453018",
+      "owner_id": "c2",
+      "summary": "{\"reaction\": \"刘静感到好奇，王芳则主动与她互动。\", \"state\": {\"c4\": {\"traits\": {}}, \"c2\": {\"traits\": {}}}, \"relationship\": {\"c4\": {\"loc-1\": \"loc-1\"}, \"c2\": {\"loc-1\": \"loc-1\"}}}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "4795b210-df9a-432f-a761-0a643531c874": {
+      "id": "4795b210-df9a-432f-a761-0a643531c874",
+      "owner_id": "c2",
+      "summary": "{'reaction': '王芳在镇上偶遇神秘事件，导致家庭陷入困境', 'state': {'bad_luck': '1'}, 'traits': {}, 'relationships': []}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "c82ef2b6-068c-4ad2-9a1e-e14437484b77": {
+      "id": "c82ef2b6-068c-4ad2-9a1e-e14437484b77",
+      "owner_id": "c5",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "8ed7f2f8-1796-4284-90ec-90e5be494abe": {
+      "id": "8ed7f2f8-1796-4284-90ec-90e5be494abe",
+      "owner_id": "c4",
+      "summary": "[LLM error] timed out",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "dd6c05c8-9e15-4417-8dab-d1afae4b05c4": {
+      "id": "dd6c05c8-9e15-4417-8dab-d1afae4b05c4",
+      "owner_id": "c5",
+      "summary": "```json\n{\"reaction\": \"陈刚在一次意外中受伤，导致无法继续参与镇上的活动。\", \"state\": {}, \"traits\": {}, \"relationships\": []}\n```",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "f3f44262-b8f2-4d43-bf9d-85b6407b846d": {
+      "id": "f3f44262-b8f2-4d43-bf9d-85b6407b846d",
+      "owner_id": "c1",
+      "summary": "{'reaction': '李明在公园偶遇陈刚，两人因咖啡馆的偶遇而产生互动，陈刚回忆起与李明的过往。', 'state': {}, 'traits': {}, 'relationships': []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "add4f170-559b-478a-b825-828414d6d21f": {
+      "id": "add4f170-559b-478a-b825-828414d6d21f",
+      "owner_id": "c5",
+      "summary": "{'reaction': '李明在公园偶遇陈刚，两人因咖啡馆的偶遇而产生互动，陈刚回忆起与李明的过往。', 'state': {}, 'traits': {}, 'relationships': []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "c91dcb46-22c9-48b5-8e23-9a74e99cc223": {
+      "id": "c91dcb46-22c9-48b5-8e23-9a74e99cc223",
+      "owner_id": "c1",
+      "summary": "{\"reaction\": \"李明在镇上遭遇意外失踪，导致其失踪。\", \"state\": {\"state\": \"失踪\"}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "a4357a6b-f003-4ce6-894d-d02f50727de2": {
+      "id": "a4357a6b-f003-4ce6-894d-d02f50727de2",
+      "owner_id": "c1",
+      "summary": "{\"reaction\": \"李明发现遗物后与刘静互动，刘静则因发现遗物而展开对话。\", \"state\": {}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    },
+    "71e0843c-5d9e-4de1-ae28-51229fe57a35": {
+      "id": "71e0843c-5d9e-4de1-ae28-51229fe57a35",
+      "owner_id": "c4",
+      "summary": "{\"reaction\": \"李明发现遗物后与刘静互动，刘静则因发现遗物而展开对话。\", \"state\": {}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    },
+    "107bee77-858f-44ee-96ff-c352de50c05a": {
+      "id": "107bee77-858f-44ee-96ff-c352de50c05a",
+      "owner_id": "c1",
+      "summary": "{\"reaction\": \"李明在镇上遭遇意外失踪，导致其失踪。\", \"state\": {\"state\": \"失踪\"}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    },
+    "5c864470-91f1-4d4c-9bac-d438d5aa8237": {
+      "id": "5c864470-91f1-4d4c-9bac-d438d5aa8237",
+      "owner_id": "c1",
+      "summary": "{\"reaction\": \"李明和张伟热情地打招呼，街道上充满温馨的氛围。\", \"state\": {}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "morning_greeting"
+      ],
+      "created_at": 5,
+      "decay_rate": 0.01
+    },
+    "c2a00fc1-32f6-49c7-9570-65b2f057ef09": {
+      "id": "c2a00fc1-32f6-49c7-9570-65b2f057ef09",
+      "owner_id": "c3",
+      "summary": "{\"reaction\": \"李明和张伟热情地打招呼，街道上充满温馨的氛围。\", \"state\": {}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "morning_greeting"
+      ],
+      "created_at": 5,
+      "decay_rate": 0.01
+    },
+    "31d130c4-996a-4157-80b4-6583048c2b71": {
+      "id": "31d130c4-996a-4157-80b4-6583048c2b71",
+      "owner_id": "c2",
+      "summary": "王芳发现可疑物品并引发争执，陈刚未直接参与事件。",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 6,
+      "decay_rate": 0.01
+    },
+    "cd7e1ddd-6616-4e9b-ba09-4d9270e04fd8": {
+      "id": "cd7e1ddd-6616-4e9b-ba09-4d9270e04fd8",
+      "owner_id": "c5",
+      "summary": "王芳发现可疑物品并引发争执，陈刚未直接参与事件。",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 6,
+      "decay_rate": 0.01
+    },
+    "a85d3ef2-70eb-45aa-a9a6-3d1748344c7b": {
+      "id": "a85d3ef2-70eb-45aa-a9a6-3d1748344c7b",
+      "owner_id": "c3",
+      "summary": "{\"reaction\": \"张伟在镇中心广场意外发现古老钟表，引发小镇危机。\", \"state\": {\"id\": \"c3\", \"name\": \"张伟\", \"language\": \"zh-CN\"}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 6,
+      "decay_rate": 0.01
+    },
+    "1e423d70-af2f-478e-b200-519d5fcfdfda": {
+      "id": "1e423d70-af2f-478e-b200-519d5fcfdfda",
+      "owner_id": "c4",
+      "summary": "{\"reaction\": \"刘静遇到张伟，两人因交易发生碰撞\", \"state\": {\"c4\": {\"comprehension\": {}, \"traits\": {}, \"states\": {}}}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "9821e048-f65a-4394-9c54-a740788ea268": {
+      "id": "9821e048-f65a-4394-9c54-a740788ea268",
+      "owner_id": "c3",
+      "summary": "{\"reaction\": \"刘静遇到张伟，两人因交易发生碰撞\", \"state\": {\"c4\": {\"comprehension\": {}, \"traits\": {}, \"states\": {}}}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "d5800cf2-9a63-4651-a905-2c248192b3b6": {
+      "id": "d5800cf2-9a63-4651-a905-2c248192b3b6",
+      "owner_id": "c5",
+      "summary": "{\"reaction\": \"震惊\", \"state\": {\"incident\": \"事件发生\"}, \"traits\": {}, \"relationships\": [{\"type\": \"incident\", \"id\": \"loc-1\"}]}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 1,
+      "decay_rate": 0.01
+    },
+    "c345a2d6-b63b-48ec-9206-e9ad032b24f6": {
+      "id": "c345a2d6-b63b-48ec-9206-e9ad032b24f6",
+      "owner_id": "c5",
+      "summary": "陈刚：意外发现古物，引发神秘事件  \n刘静：同样，发现古物，引发神秘事件",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "6b09d884-0120-406a-9671-96bb715aecc4": {
+      "id": "6b09d884-0120-406a-9671-96bb715aecc4",
+      "owner_id": "c4",
+      "summary": "陈刚：意外发现古物，引发神秘事件  \n刘静：同样，发现古物，引发神秘事件",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "f55b9b63-326d-489e-9aff-b6ef02a2abd0": {
+      "id": "f55b9b63-326d-489e-9aff-b6ef02a2abd0",
+      "owner_id": "c4",
+      "summary": "{\"reaction\": \"刘静在镇上遭遇意外事故，导致严重受伤，无法正常活动。\", \"state\": {}, \"traits\": {}, \"relationships\": []}",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 2,
+      "decay_rate": 0.01
+    },
+    "f932b44d-67cb-4032-bda8-6e1a1598bc5f": {
+      "id": "f932b44d-67cb-4032-bda8-6e1a1598bc5f",
+      "owner_id": "c3",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "d12f4353-4b19-4e84-a2ac-40f74841e62a": {
+      "id": "d12f4353-4b19-4e84-a2ac-40f74841e62a",
+      "owner_id": "c1",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "878ba7d4-0a1e-489a-8e94-a21cd523c8df": {
+      "id": "878ba7d4-0a1e-489a-8e94-a21cd523c8df",
+      "owner_id": "c5",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 3,
+      "decay_rate": 0.01
+    },
+    "b24298ca-3d94-457b-bb76-f0be60ec2642": {
+      "id": "b24298ca-3d94-457b-bb76-f0be60ec2642",
+      "owner_id": "c1",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    },
+    "7f41801e-8c01-41c2-96e4-74e95726d84f": {
+      "id": "7f41801e-8c01-41c2-96e4-74e95726d84f",
+      "owner_id": "c4",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "random_encounter"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    },
+    "280d902b-294b-4d7d-8c72-b5703658ae57": {
+      "id": "280d902b-294b-4d7d-8c72-b5703658ae57",
+      "owner_id": "c5",
+      "summary": "（两人简短地聊了几句，彼此点头示意。）",
+      "salience": 1.0,
+      "tags": [
+        "bad_luck"
+      ],
+      "created_at": 4,
+      "decay_rate": 0.01
+    }
+  },
+  "events": {
+    "fb8d1920-87f7-4c3c-b48b-8960102eb592": {
+      "id": "fb8d1920-87f7-4c3c-b48b-8960102eb592",
+      "type": "random_encounter",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c4",
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "[LLM error] timed out"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "c217f074-2db9-4c63-96f6-a1dd41aca85d": {
+      "id": "c217f074-2db9-4c63-96f6-a1dd41aca85d",
+      "type": "bad_luck",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个关于小镇的事件，事件类型是bad_luck，参与者有李明。需要生成一个简短的标题和一段描述，符合这个类型。首先，我得确定事件类型是bad luck，也就是不幸的事件。参与者是李明，可能需要描述一个他遇到的不幸情况。\n\n用户要求如果记忆摘要存在，就使用它们保持故事连续。但这里没有记忆摘要，所以可能需要一个普通事件。标题要简洁，比如“李明的意外事件”。描述需要具体，比如李明在镇上遇到意外，比如失踪或者事故。要确保描述1-2句话，不要太长。\n\n检查有没有遗漏的信息，比如是否需要考虑其他参与者？但用户只给了李明，所以描述应该围绕他。避免任何多余的内容，保持JSON格式正确。最后确认标题和描述符合要求，没有多余说明。\n</think>\n\n{\"title\": \"李明的意外失踪\", \"description\": \"李明在镇上遭遇意外，导致其失踪，引发小镇居民的担忧。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "f0291bac-7daa-4086-b770-1d21ca9aeb51": {
+      "id": "f0291bac-7daa-4086-b770-1d21ca9aeb51",
+      "type": "random_encounter",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c2",
+        "c3"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个城镇的事件，事件类型是随机遭遇，参与者有两个角色，王芳和张伟。需要生成一个简短的标题和一段1到2句话的描述，还要用记忆摘要来保持故事连续性。首先，我得确定事件类型，随机遭遇，所以可能需要一个意外的相遇。\n\n接下来，参与者有两个，所以可能需要设计一个冲突或意外事件。王芳和张伟都是空有记忆摘要，所以可能需要他们之间的互动。标题要吸引人，比如“意外邂逅”，描述要具体，比如两人在废弃仓库相遇，发现神秘物品。这样既符合随机遭遇，又用了记忆摘要，保持故事连贯。需要检查是否符合要求，没有多余内容，用简体中文，JSON格式正确。\n</think>\n\n{\"title\": \"意外邂逅\", \"description\": \"王芳和张伟在废弃仓库中意外发现一具被遗弃的古董钟表，两人因好奇展开互动，钟表的神秘力量引发小镇居民的猜测与好奇。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "4e7c2bfa-97b3-4a0a-bc55-b01b31a517e9": {
+      "id": "4e7c2bfa-97b3-4a0a-bc55-b01b31a517e9",
+      "type": "bad_luck",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个关于小镇的事件，事件类型是bad_luck，参与者有陈刚。需要生成一个简短的标题和一段描述，描述一个具体事件。首先，我得确定事件类型是bad luck，也就是不幸的事件。参与者只有陈刚，所以可能需要一个关于他个人遭遇不幸的情节。\n\n接下来，考虑用户的要求，如果记忆摘要存在的话要使用。但这里参与者没有记忆摘要，所以可能不需要。需要给一个具体的事件，比如陈刚在某个地方遇到意外，或者发生意外事件。可能的场景比如车祸、意外受伤，或者家庭问题。要简洁，1-2句话。\n\n标题要吸引人，比如“陈刚的意外”或者“小镇上的不幸”。描述部分要具体，比如“陈刚在一次意外中受伤，导致家庭陷入困境”。需要确保符合JSON格式，没有多余内容，用简体中文。检查有没有遗漏的信息，确保正确无误。\n</think>\n\n{\"title\": \"陈刚的意外\", \"description\": \"陈刚在一次意外中受伤，导致家庭陷入困境\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "19b2f962-aa7a-4499-8428-3232ee71cf48": {
+      "id": "19b2f962-aa7a-4499-8428-3232ee71cf48",
+      "type": "random_encounter",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c4",
+        "c3"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个城镇的事件，事件类型是随机遭遇，参与者有两个角色，刘静和张伟。需要生成一个简短的标题和一段1到2句话的描述，还要用记忆摘要来保持故事连续性。首先，我得确定事件类型，随机遭遇，所以可能需要一个意外的相遇。\n\n接下来，参与者有两个，刘静和张伟，他们的记忆摘要为空，所以不需要用记忆摘要。标题要吸引人，可能需要结合他们的名字，比如“刘静与张伟的意外邂逅”。描述部分要具体，比如他们可能在某个地方遇到对方，比如公园或者市场，这样能体现随机性。\n\n需要检查是否符合要求，有没有遗漏的部分，比如是否避免了元信息或解释。确保JSON格式正确，没有语法错误。最后，确认描述简洁，符合1-2句话的要求。\n</think>\n\n{\"title\": \"刘静与张伟的意外邂逅\", \"description\": \"在公园的长椅上，刘静发现张伟正在捡拾遗落的书本，两人因偶然的相遇展开互动。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "a6397c7f-8907-4226-90a1-3201abae5f0e": {
+      "id": "a6397c7f-8907-4226-90a1-3201abae5f0e",
+      "type": "bad_luck",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个关于小镇的事件，事件类型是bad_luck，参与者有陈刚。需要生成一个简短的标题和一段描述，描述一个具体事件。首先，我得确定事件类型是bad luck，也就是不幸或意外事件。参与者只有陈刚，所以事件应该围绕他的情况展开。\n\n接下来，考虑如何用1-2句话描述。可能需要一个具体的场景，比如陈刚在某个地方遇到意外，或者有其他不幸的事件发生。比如，可能他因为某种原因被困或者遇到危险。要注意使用简体中文，避免多余的话。\n\n然后，标题要吸引人，可能需要包含“小镇”或者“意外”之类的词汇。描述部分要具体，比如陈刚在夜晚遇到危险，或者某个意外事件发生。需要确保符合用户的要求，没有使用元信息或解释，直接给出JSON格式的结果。\n\n检查一下有没有遗漏的条件，比如参与者是否正确，是否有memory_summaries需要使用。这里没有，所以直接描述即可。最后，确保JSON格式正确，没有语法错误。\n</think>\n\n{\"title\": \"陈刚遇险\", \"description\": \"陈刚在深夜的小镇街道上遭遇意外，被困在废弃的仓库中，因浓烟和失温导致昏迷。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "b6ee748d-1acf-44fc-92d6-65dc939b2ea6": {
+      "id": "b6ee748d-1acf-44fc-92d6-65dc939b2ea6",
+      "type": "random_encounter",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c5",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个城镇的事件，事件类型是随机遭遇，参与者有两个角色，陈刚和刘静。需要生成一个简短的标题和一段1到2句话的描述，还要用记忆摘要来保持故事连续性。首先，我得确定这两个角色可能遇到的情况。陈刚可能是个警察，刘静可能是社区志愿者，这样他们可能在处理突发事件，比如火灾或事故。然后，记忆摘要如果存在的话，要使用它们来延续故事。不过用户没有提供记忆摘要，所以可能需要假设他们没有，或者用一般性的描述。标题需要吸引人，比如“火警紧急救援”。描述部分要具体，比如陈刚和刘静在火灾现场合作，或者刘静帮助陈刚处理紧急情况。要确保描述简洁，符合事件类型。最后，检查是否符合JSON格式，没有多余的内容，避免任何解释或元信息。\n</think>\n\n{\n  \"title\": \"火警紧急救援\",\n  \"description\": \"陈刚和刘静在火灾现场协同救援，刘静协助陈刚疏散人群，确保生命安全。\"\n}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "1b6e4a20-f810-44e3-9930-a3e3dd0f5bb0": {
+      "id": "1b6e4a20-f810-44e3-9930-a3e3dd0f5bb0",
+      "type": "bad_luck",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个关于小镇的事件，事件类型是bad_luck，参与者有刘静。需要生成一个简短的标题和一段描述，符合要求。首先，我得确定事件类型是bad luck，也就是不幸的事件。参与者是刘静，可能需要一个具体的事件发生。\n\n用户要求如果记忆摘要存在，就使用它们保持故事连续。但这里没有记忆摘要，所以可能需要创造一个新事件。标题要简洁，描述要具体，比如刘静在某个地方遇到意外情况。可能的场景比如意外受伤或者失踪。需要确保描述1-2句话，不要太长。\n\n检查有没有遗漏的条件，比如不要用元评论或解释，直接输出JSON。标题可能用“刘静遭遇意外”或者“小镇失踪事件”。描述可以是“刘静在夜晚独自前往集市时，意外发现被遗弃的古董物品，引发小镇居民的广泛关注。”这样既符合事件类型，又具体。确认没有多余信息，然后生成JSON。\n</think>\n\n{\"title\": \"刘静遭遇意外\", \"description\": \"刘静在夜晚独自前往集市时，意外发现被遗弃的古董物品，引发小镇居民的广泛关注。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "1fbe2904-cb5d-401f-9f99-3a7463357766": {
+      "id": "1fbe2904-cb5d-401f-9f99-3a7463357766",
+      "type": "random_encounter",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c3",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个城镇的事件，事件类型是随机遭遇，参与者有两个角色，张伟和刘静。需要生成一个简短的标题和一段1到2句话的描述，还要用记忆摘要来保持故事连续性。首先，我得确定事件类型，随机遭遇，所以可能需要一个意外的相遇。参与者有两个，所以可能需要一个冲突或意外事件。\n\n接下来，标题要吸引人，可能用“意外邂逅”或者“随机相遇”。描述部分要具体，比如张伟和刘静在某个地方相遇，可能因为天气或事件。要注意避免元信息，只给出标题和描述。检查是否有记忆摘要，如果有就用它们，但这里没有，所以不用考虑。最后确保JSON格式正确，没有多余的内容。\n</think>\n\n{\"title\": \"意外邂逅\", \"description\": \"张伟和刘静在废弃仓库中因意外发现隐藏的古老地图而展开互动。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "79fdb252-b00e-4e62-9fb6-1bfabad45fb3": {
+      "id": "79fdb252-b00e-4e62-9fb6-1bfabad45fb3",
+      "type": "bad_luck",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "<think>\n好的，用户让我模拟一个关于小镇的事件，事件类型是bad_luck，参与者有李明。需要生成一个简短的标题和一段描述，不超过1-2句话，还要用JSON格式。首先，我得确定事件类型是bad luck，所以可能需要一个不幸的事件。李明作为参与者，可能有某种意外或错误导致情况发生。\n\n接下来，考虑如何让这个事件具体。比如，李明可能在某个地方做错事，导致小镇的某个问题。比如，他可能在集市上卖错了东西，或者不小心破坏了某个地方的设施。这样既符合bad luck，又能展示一个具体的事件。\n\n然后，标题要简洁，可能用“李明的意外事件”或者“小镇的不幸时刻”。描述部分需要简短，说明事件的具体情况，比如他卖错了东西，导致小镇的某个问题，或者破坏了某个地方。确保描述准确，符合用户的要求。\n\n还要注意不要使用任何元信息或解释，直接给出JSON。检查一下是否符合JSON格式，有没有语法错误。最后确认标题和描述是否符合用户的要求，没有多余的内容。\n</think>\n\n{\"title\": \"李明的意外事件\", \"description\": \"李明在集市上卖错商品，引发小镇居民的不满，导致公共设施受损\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "bdbe8483-d5d0-4986-82c5-a21da6b7f94d": {
+      "id": "bdbe8483-d5d0-4986-82c5-a21da6b7f94d",
+      "type": "random_encounter",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c4",
+        "c2"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"意外邂逅\", \"description\": \"刘静在寻找神秘物品时意外遇到王芳，两人因好奇展开互动。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "c24c5166-b409-4ed8-8a92-f9b8da10bc70": {
+      "id": "c24c5166-b409-4ed8-8a92-f9b8da10bc70",
+      "type": "bad_luck",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c2"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"王芳的意外遭遇\", \"description\": \"王芳在镇上偶遇神秘事件，导致家庭陷入困境\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "b5a0eafb-b69c-4ad0-941d-c82b048a725f": {
+      "id": "b5a0eafb-b69c-4ad0-941d-c82b048a725f",
+      "type": "random_encounter",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c5",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"意外发现古物\", \"description\": \"陈刚和刘静在城镇中偶然相遇，发现了一个古老的物品，引发了一系列神秘事件\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "018d6900-106c-459e-a1dd-de932919b1f4": {
+      "id": "018d6900-106c-459e-a1dd-de932919b1f4",
+      "type": "bad_luck",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"小镇的意外\", \"description\": \"陈刚在一次意外中受伤，导致无法继续参与镇上的活动\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "cdd242fe-a30f-48ec-bc43-89f4a4af6e9e": {
+      "id": "cdd242fe-a30f-48ec-bc43-89f4a4af6e9e",
+      "type": "random_encounter",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c1",
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"陌生人相遇\", \"description\": \"李明在公园偶遇陈刚，两人因咖啡馆的偶遇而产生互动，陈刚回忆起与李明的过往。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "17ad44a8-978d-46b2-b3fe-055b7e4ccab9": {
+      "id": "17ad44a8-978d-46b2-b3fe-055b7e4ccab9",
+      "type": "bad_luck",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"李明的意外失踪\", \"description\": \"李明在镇上遭遇意外，导致其失踪。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "a2f9a529-3d22-4d12-9107-e0e9e8ba7d74": {
+      "id": "a2f9a529-3d22-4d12-9107-e0e9e8ba7d74",
+      "type": "random_encounter",
+      "created_at": 4,
+      "scheduled_for": 4,
+      "location_id": "loc-1",
+      "actors": [
+        "c1",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"陌生人相遇\", \"description\": \"李明和刘静在废弃仓库相遇，因意外发现对方的遗物而展开互动。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "39fe334f-df78-479d-9f1e-d75352d9b829": {
+      "id": "39fe334f-df78-479d-9f1e-d75352d9b829",
+      "type": "bad_luck",
+      "created_at": 4,
+      "scheduled_for": 4,
+      "location_id": "loc-1",
+      "actors": [
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"李明的意外失踪\", \"description\": \"李明在镇上遭遇意外，导致其失踪。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "12dcce05-7f55-4cbd-b49c-c62034180f4a": {
+      "id": "12dcce05-7f55-4cbd-b49c-c62034180f4a",
+      "type": "morning_greeting",
+      "created_at": 5,
+      "scheduled_for": 5,
+      "location_id": "loc-1",
+      "actors": [
+        "c1",
+        "c3"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"晨光中的问候\", \"description\": \"李明和张伟在街道上迎接新一天的开始，两人热情地打招呼，气氛温馨。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "865e1962-71ea-4326-8bf8-b924bbd5e33f": {
+      "id": "865e1962-71ea-4326-8bf8-b924bbd5e33f",
+      "type": "random_encounter",
+      "created_at": 5,
+      "scheduled_for": 5,
+      "location_id": "loc-1",
+      "actors": [
+        "c3",
+        "c2"
+      ],
+      "payload": {},
+      "origin": "system",
+      "status": "ready",
+      "effects": []
+    },
+    "5aaf29c1-7a29-4ead-a659-0f5cd8d25f90": {
+      "id": "5aaf29c1-7a29-4ead-a659-0f5cd8d25f90",
+      "type": "bad_luck",
+      "created_at": 5,
+      "scheduled_for": 5,
+      "location_id": "loc-1",
+      "actors": [
+        "c3"
+      ],
+      "payload": {},
+      "origin": "system",
+      "status": "ready",
+      "effects": []
+    },
+    "fd8ded64-64b7-4ff2-ba2e-4c7057c5c85e": {
+      "id": "fd8ded64-64b7-4ff2-ba2e-4c7057c5c85e",
+      "type": "random_encounter",
+      "created_at": 6,
+      "scheduled_for": 6,
+      "location_id": "loc-1",
+      "actors": [
+        "c2",
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"巡逻中的意外\", \"description\": \"王芳在巡逻中发现陈刚驾驶的车辆上有可疑物品，两人因车辆问题发生争执。\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "db134073-febf-46b7-b4c0-8d5e6694eae5": {
+      "id": "db134073-febf-46b7-b4c0-8d5e6694eae5",
+      "type": "bad_luck",
+      "created_at": 6,
+      "scheduled_for": 6,
+      "location_id": "loc-1",
+      "actors": [
+        "c3"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"张伟的意外事件\", \"description\": \"张伟在镇中心广场意外发现了一个古老的钟表，引发了一系列神秘的小镇危机\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "a6d601a9-0609-4dc8-b694-2314a5861852": {
+      "id": "a6d601a9-0609-4dc8-b694-2314a5861852",
+      "type": "random_encounter",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c4",
+        "c3"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"陌生人相遇\", \"description\": \"刘静在集市上偶遇张伟，两人因交易发生意外碰撞\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "03572444-6954-4472-8e95-509b4913aca2": {
+      "id": "03572444-6954-4472-8e95-509b4913aca2",
+      "type": "bad_luck",
+      "created_at": 1,
+      "scheduled_for": 1,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"陈刚在镇上偷了东西，结果被警察抓住\", \"description\": \"陈刚在镇上偷了东西，结果被警察抓住\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "23d44dd5-18e3-4142-943e-2752566f67de": {
+      "id": "23d44dd5-18e3-4142-943e-2752566f67de",
+      "type": "random_encounter",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c5",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"意外发现古物\", \"description\": \"陈刚和刘静在城镇中偶然相遇，发现了一个古老的物品，引发了一系列神秘事件\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "c701d0c2-3aa5-474e-b662-ae02b1339168": {
+      "id": "c701d0c2-3aa5-474e-b662-ae02b1339168",
+      "type": "bad_luck",
+      "created_at": 2,
+      "scheduled_for": 2,
+      "location_id": "loc-1",
+      "actors": [
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"意外受伤\", \"description\": \"刘静在镇上遭遇意外事故，导致严重受伤\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "9c139b4e-c55b-4f8d-8620-06f7ae9d9bdf": {
+      "id": "9c139b4e-c55b-4f8d-8620-06f7ae9d9bdf",
+      "type": "random_encounter",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c3",
+        "c1"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "{\"title\": \"神秘邂逅\", \"description\": \"张伟在城镇广场发现一个发光的古物，李明则在李明的笔记本上发现了一段被遗忘的日记\"}"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "be3d133e-427e-427f-86e4-1ae8e91efacf": {
+      "id": "be3d133e-427e-427f-86e4-1ae8e91efacf",
+      "type": "bad_luck",
+      "created_at": 3,
+      "scheduled_for": 3,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "一个平凡的小插曲发生了。"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "f347e755-65eb-422f-8ea3-e85ddbe5dd3e": {
+      "id": "f347e755-65eb-422f-8ea3-e85ddbe5dd3e",
+      "type": "random_encounter",
+      "created_at": 4,
+      "scheduled_for": 4,
+      "location_id": "loc-1",
+      "actors": [
+        "c1",
+        "c4"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "一个平凡的小插曲发生了。"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    },
+    "c8bd4545-d8a1-4155-878a-3fa1defa9ed6": {
+      "id": "c8bd4545-d8a1-4155-878a-3fa1defa9ed6",
+      "type": "bad_luck",
+      "created_at": 4,
+      "scheduled_for": 4,
+      "location_id": "loc-1",
+      "actors": [
+        "c5"
+      ],
+      "payload": {
+        "incident": {
+          "title": "incident",
+          "description": "一个平凡的小插曲发生了。"
+        }
+      },
+      "origin": "system",
+      "status": "resolved",
+      "effects": []
+    }
+  }
+}

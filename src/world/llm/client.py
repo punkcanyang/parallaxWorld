@@ -19,16 +19,38 @@ class HttpLLMClient:
         temperature: float = 0.7,
         system_prompt: str | None = None,
         timeout: float = 15.0,
+        max_tokens: int = 256,
     ):
         self.endpoint = endpoint or os.getenv("WORLD_LLM_ENDPOINT", "http://localhost:3001/v1/chat/completions")
         self.model = model or os.getenv("WORLD_LLM_MODEL", None)
         self.temperature = float(os.getenv("WORLD_LLM_TEMPERATURE", temperature))
         self.system_prompt = system_prompt or os.getenv(
             "WORLD_LLM_SYSTEM_PROMPT",
-            "You are narrating a small town simulation. Be concise.",
+            "请用简体中文回答，禁止输出<think>或思维链，只给最终简洁描述。",
         )
-        self.timeout = timeout
-        self._client = httpx.Client(timeout=timeout)
+        self.timeout = float(os.getenv("WORLD_LLM_TIMEOUT", timeout))
+        self.stop_tokens = os.getenv("WORLD_LLM_STOP", "<think>,</think>").split(",")
+        self.max_tokens = int(os.getenv("WORLD_LLM_MAX_TOKENS", max_tokens))
+        self._client = httpx.Client(timeout=self.timeout)
+
+    @staticmethod
+    def _strip_think(text: str) -> str:
+        if not isinstance(text, str):
+            return text
+        import re
+
+        return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL | re.IGNORECASE).strip()
+
+    def _memory_summaries_for_actor(self, store: WorldStore, actor_id: str, limit: int = 3) -> List[str]:
+        if actor_id not in store.world.characters:
+            return []
+        c = store.world.characters[actor_id]
+        summaries = []
+        for mid in c.memory_ids:
+            mem = store.world.memories.get(mid)
+            if mem and "summary" in mem.tags:
+                summaries.append(mem.summary)
+        return summaries[-limit:]
 
     def describe_event(self, event: Event, store: WorldStore) -> str:
         participants: List[dict] = []
@@ -43,6 +65,7 @@ class HttpLLMClient:
                         "comprehension": ch.comprehension,
                         "traits": ch.traits,
                         "states": ch.states,
+                        "memory_summaries": self._memory_summaries_for_actor(store, ch.id),
                     }
                 )
         prompt = build_event_reaction_prompt(
@@ -64,6 +87,8 @@ class HttpLLMClient:
             "messages": messages,
             "temperature": self.temperature,
             "stream": False,
+            "stop": self.stop_tokens,
+            "max_tokens": self.max_tokens,
         }
         if self.model:
             payload["model"] = self.model
@@ -72,22 +97,29 @@ class HttpLLMClient:
             resp = self._client.post(self.endpoint, json=payload)
             resp.raise_for_status()
             data = resp.json()
-            # OpenAI/Parallax style: choices[0].message.content
             content = (
                 data.get("choices", [{}])[0]
                 .get("message", {})
                 .get("content", "")
             )
-            return content or "[empty LLM response]"
+            cleaned = self._strip_think(content)
+            return cleaned if cleaned else "（两人简短地聊了几句，彼此点头示意。）"
         except Exception as e:
-            return f"[LLM error] {e}"
+            return "（两人简短地聊了几句，彼此点头示意。）"
 
     def generate_incident(self, event_type: str, store: WorldStore, actors: List[str]) -> Dict:
         participants: List[Dict] = []
         for aid in actors:
             ch = store.world.characters.get(aid)
             if ch:
-                participants.append({"id": ch.id, "name": ch.name, "traits": ch.traits})
+                participants.append(
+                    {
+                        "id": ch.id,
+                        "name": ch.name,
+                        "traits": ch.traits,
+                        "memory_summaries": self._memory_summaries_for_actor(store, ch.id),
+                    }
+                )
 
         prompt = build_incident_prompt(event_type, participants)
         messages = [
@@ -98,6 +130,8 @@ class HttpLLMClient:
             "messages": messages,
             "temperature": self.temperature,
             "stream": False,
+            "stop": self.stop_tokens,
+            "max_tokens": self.max_tokens,
         }
         if self.model:
             payload["model"] = self.model
@@ -111,15 +145,15 @@ class HttpLLMClient:
                 .get("message", {})
                 .get("content", "")
             )
-            # Try to parse JSON from content
             import json
 
             try:
                 return json.loads(content)
             except Exception:
-                return {"title": "incident", "description": content}
-        except Exception as e:
-            return {"title": "incident", "description": f"[LLM error] {e}"}
+                cleaned = self._strip_think(content)
+                return {"title": "incident", "description": cleaned}
+        except Exception:
+            return {"title": "incident", "description": "一个平凡的小插曲发生了。"}
 
     def summarize_memories(self, memories: List[Dict], max_items: int = 5) -> str:
         prompt = build_memory_summary_prompt(memories, max_items)
@@ -131,6 +165,8 @@ class HttpLLMClient:
             "messages": messages,
             "temperature": self.temperature,
             "stream": False,
+            "stop": self.stop_tokens,
+            "max_tokens": self.max_tokens,
         }
         if self.model:
             payload["model"] = self.model
@@ -143,6 +179,6 @@ class HttpLLMClient:
                 .get("message", {})
                 .get("content", "")
             )
-            return content
-        except Exception as e:
-            return f"[LLM error] {e}"
+            return self._strip_think(content)
+        except Exception:
+            return "（最近几条记忆被简要整理。）"

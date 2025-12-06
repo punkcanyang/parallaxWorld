@@ -18,6 +18,7 @@ from backend.server.static_config import (
 )
 from parallax_utils.ascii_anime import display_parallax_run
 from parallax_utils.file_util import get_project_root
+import os
 import uvicorn
 from world.api.routes import configure_world, router as world_router
 from world.api.worlds import configure_world_manager, router as worlds_router
@@ -29,7 +30,29 @@ from world.llm.client import HttpLLMClient
 from parallax_utils.logging_config import get_logger, set_log_level
 from parallax_utils.version_check import check_latest_release
 
+def load_dotenv():
+    """Load environment variables from project root .env if present."""
+    env_path = get_project_root() / ".env"
+    if not env_path.exists():
+        return
+    try:
+        with env_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if "=" not in line:
+                    continue
+                key, val = line.split("=", 1)
+                key = key.strip()
+                val = val.strip().strip('"').strip("'")
+                os.environ.setdefault(key, val)
+    except Exception:
+        pass
+
+
 app = FastAPI()
+load_dotenv()
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,6 +71,7 @@ configure_world(world_manager.store, world_manager.clock, world_manager.engine, 
 configure_world_manager(world_manager)
 app.include_router(world_router, prefix="/world")
 app.include_router(worlds_router, prefix="/world")
+
 
 
 @app.get("/model/list")

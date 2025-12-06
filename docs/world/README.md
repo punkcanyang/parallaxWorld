@@ -48,6 +48,12 @@
 - POST `/world/simulate/start`：后台连续运行。
 - POST `/world/simulate/stop`：暂停循环。
 - GET `/world/logs/tail?limit=&kind=`：尾部日志，可筛类型。
+- 世界管理：
+  - GET `/world/worlds`：列出世界，返回当前 world_id。
+  - POST `/world/worlds`：创建世界，body 需包含 `id`，可选 `name`、`background`、`default_language`、`force_default_language`。
+  - POST `/world/worlds/select`：切换世界，body `{ "id": "<world_id>" }`。
+- 自定义事件：
+  - POST `/world/events` 注入任意事件，设置 `type/actors/payload/effects/scheduled_for`。`scheduled_for=0` 即刻处理；`effects` 可直接修改关系/状态/属性（如 `{"target":"c1","field":"rel:c2","delta":1.0}`）。
 
 ### 添加人物
 - 使用 `POST /world/characters` 创建：
@@ -72,7 +78,18 @@
   - `WORLD_LLM_MODEL`：可选，显式指定模型名称
   - `WORLD_LLM_TEMPERATURE`：默认 `0.7`
   - `WORLD_LLM_SYSTEM_PROMPT`：默认 “You are narrating a small town simulation. Be concise.”
+  - `WORLD_LLM_TIMEOUT`：请求超时秒数，默认 15
+  - `WORLD_LLM_STOP`：stop tokens，默认 `<think>,</think>`（逗号分隔）
+  - `WORLD_LLM_MAX_TOKENS`：每次生成的最大 token 数，默认 256
 - 代码默认：缺省值同上；可在 `HttpLLMClient` 初始化时覆盖。
+- 可选：在项目根目录放置 `.env`，内容为以上键值，后端启动时会自动加载：
+  ```
+  WORLD_LLM_ENDPOINT=http://localhost:3001/v1/chat/completions
+  WORLD_LLM_MODEL=Qwen/Qwen3-1.8B-Instruct
+  WORLD_LLM_TEMPERATURE=0.4
+  WORLD_LLM_SYSTEM_PROMPT=请用简体中文回答，简洁，无思维链。
+  WORLD_LLM_MAX_TOKENS=256
+  ```
 ***
 
 ## 多世界管理与持久化
@@ -112,7 +129,30 @@
 
    # 查看日志尾部
    curl http://localhost:3001/world/logs/tail?limit=10
+
+   # 切换到 myworld（若不存在可先创建）
+   curl -X POST http://localhost:3001/world/worlds/select \
+     -H 'Content-Type: application/json' \
+     -d '{"id":"myworld"}'
+
+   # 创建两个角色
+   curl -X POST http://localhost:3001/world/characters \
+     -H 'Content-Type: application/json' \
+     -d '{"id":"c1","name":"Alice","age":20,"role":"villager","location_id":"loc-1"}'
+   curl -X POST http://localhost:3001/world/characters \
+     -H 'Content-Type: application/json' \
+     -d '{"id":"c2","name":"Bob","age":22,"role":"villager","location_id":"loc-1"}'
+
+   # 再推进一次 tick 并查看事件
+   curl -X POST http://localhost:3001/world/simulate/step
+   curl http://localhost:3001/world/events?limit=10
    ```
+
+## 其他功能速览
+- 语言设定：世界默认语言、角色语言/理解力；可强制全局语言输出或按角色语言输出。
+- 人格漂移：事件类型对角色关系做小幅正/负调整。
+- 记忆与摘要：事件自动生成记忆，按次数触发 LLM 摘要，`/characters/{id}/memories` 可查。
+- 持久化与多世界：世界/角色存储于 `data/worlds/<world_id>/world.json`，日志同目录，支持多世界切换。***
 
 3) 前端页面  
    - 路由 `#/world`：时间控制（start/stop/step）、事件流、角色列表+详情。  

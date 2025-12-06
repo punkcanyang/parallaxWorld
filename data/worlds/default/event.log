@@ -1,0 +1,65 @@
+{"id": "fb8d1920-87f7-4c3c-b48b-8960102eb592", "type": "random_encounter", "actors": ["c4", "c1"], "location_id": "loc-1", "tick": 1, "incident": {"title": "incident", "description": "[LLM error] timed out"}, "dialogue": "[LLM error] timed out", "personality_drift": [{"pair": ["c4", "c1"], "delta": 0.1, "before": {"a_to_b": 0.0, "b_to_a": 0.0}, "after": {"a_to_b": 0.1, "b_to_a": 0.1}}], "memories": [{"owner": "c4", "id": "1378543d-0a19-4c75-a8f2-566ee93f2198", "summary": "[LLM error] timed out"}, {"owner": "c1", "id": "3b2de8a5-fc94-435c-a752-a9294d8c6b04", "summary": "[LLM error] timed out"}], "ts": 1764950449.382474}
+{"id": "c217f074-2db9-4c63-96f6-a1dd41aca85d", "type": "bad_luck", "actors": ["c1"], "location_id": "loc-1", "tick": 1, "incident": {"title": "incident", "description": "{\"title\": \"李明的意外失踪\", \"description\": \"李明在镇上遭遇意外，导致其失踪，引发小镇居民的担忧。\"}"}, "dialogue": "```json\n{\n  \"title\": \"李明的意外失踪\",\n  \"description\": \"李明在镇上遭遇意外，导致其失踪，引发小镇居民的担忧。\"\n}\n```", "memories": [{"owner": "c1", "id": "23e93636-52c3-4cb1-8fa3-636b52ccd0c1", "summary": "<think>\n好的，我现在需要处理用户的请求，生成符合要求的模拟事件。首先，用户提供的事件信息包括类型是bad_luck，地点是loc-1，payload包含incident的title和description。用户要求生成一个简短的标题和描述，参与者是李明。\n\n首先，标题需要简洁，可能用“李明的意外失踪”比较合适。描述部分要具体，比如李明在镇上遇到意外，导致失踪，引发居民担忧。需要确保描述在1"}], "ts": 1764950472.234147}
+{"id": "f0291bac-7daa-4086-b770-1d21ca9aeb51", "type": "random_encounter", "actors": ["c2", "c3"], "location_id": "loc-1", "tick": 2, "incident": {"title": "incident", "description": "{\"title\": \"意外邂逅\", \"description\": \"王芳和张伟在废弃仓库中意外发现一具被遗弃的古董钟表，两人因好奇展开互动，钟表的神秘力量引发小镇居民的猜测与好奇。\"}"}, "dialogue": "[LLM error] timed out", "personality_drift": [{"pair": ["c2", "c3"], "delta": 0.1, "before": {"a_to_b": 0.0, "b_to_a": 0.0}, "after": {"a_to_b": 0.1, "b_to_a": 0.1}}], "memories": [{"owner": "c2", "id": "8f0a66ad-a25c-44ab-8b0f-5a44331c5866", "summary": "[LLM error] timed out"}, {"owner": "c3", "id": "814eb6e1-1cb5-4164-9194-f9f245c9856e", "summary": "[LLM error] timed out"}], "ts": 1764950852.944021}
+{"id": "4e7c2bfa-97b3-4a0a-bc55-b01b31a517e9", "type": "bad_luck", "actors": ["c5"], "location_id": "loc-1", "tick": 2, "incident": {"title": "incident", "description": "{\"title\": \"陈刚的意外\", \"description\": \"陈刚在一次意外中受伤，导致家庭陷入困境\"}"}, "dialogue": "[LLM error] timed out", "memories": [{"owner": "c5", "id": "24ab96dd-4b76-4207-8f70-1e106488ee13", "summary": "[LLM error] timed out"}], "ts": 1764950882.687823}
+{"id": "19b2f962-aa7a-4499-8428-3232ee71cf48", "type": "random_encounter", "actors": ["c4", "c3"], "location_id": "loc-1", "tick": 3, "incident": {"title": "incident", "description": "{\"title\": \"刘静与张伟的意外邂逅\", \"description\": \"在公园的长椅上，刘静发现张伟正在捡拾遗落的书本，两人因偶然的相遇展开互动。\"}"}, "dialogue": "[LLM error] timed out", "personality_drift": [{"pair": ["c4", "c3"], "delta": 0.1, "before": {"a_to_b": 0.0, "b_to_a": 0.0}, "after": {"a_to_b": 0.1, "b_to_a": 0.1}}], "memories": [{"owner": "c4", "id": "e5582f25-69de-4158-8399-32c25503b91a", "summary": "[LLM error] timed out"}, {"owner": "c3", "id": "9bbcbab9-2cca-4521-978e-5498f8142ba6", "summary": "[LLM error] timed out"}], "ts": 1764951070.073472}
+{"id": "a6397c7f-8907-4226-90a1-3201abae5f0e", "type": "bad_luck", "actors": ["c5"], "location_id": "loc-1", "tick": 3, "incident": {"title": "incident", "description": "{\"title\": \"陈刚遇险\", \"description\": \"陈刚在深夜的小镇街道上遭遇意外，被困在废弃的仓库中，因浓烟和失温导致昏迷。\"}"}, "dialogue": "[LLM error] timed out", "memories": [{"owner": "c5", "id": "5e0f9842-7b10-45b8-ac96-9a9769c8bdb8", "summary": "[LLM error] timed out"}], "ts": 1764951095.9363441}
+[1764951552] tick=1 type=random_encounter | incident=incident | desc={
+  "title": "火警紧急救援",
+  "description": "陈刚和刘静在火灾现场协同救援，刘静协助陈刚疏散人群，确保生命安全。"
+} | dialogue=[LLM error] timed out
+[1764951582] tick=1 type=bad_luck | incident=incident | desc={"title": "刘静遭遇意外", "description": "刘静在夜晚独自前往集市时，意外发现被遗弃的古董物品，引发小镇居民的广泛关注。"} | dialogue=[LLM error] timed out
+[1764951866] tick=1 type=random_encounter | incident=incident | desc={"title": "意外邂逅", "description": "张伟和刘静在废弃仓库中因意外发现隐藏的古老地图而展开互动。"} | dialogue=```json
+{
+  "title": "意外邂逅",
+  "description": "张伟和刘静在废弃仓库中因意外发现隐藏的古老地图而展开互动。",
+  "participants": [
+    {
+      "id": "c3",
+      "name": "张伟",
+      "language": "zh-CN",
+      "comprehension": {},
+      "traits": {},
+      "states": {},
+      "memory_summaries": []
+    },
+    {
+      "id": "c4",
+      "name": "刘静",
+      "language": "zh-CN",
+      "comprehension": {},
+      "traits": {},
+      "states": {},
+      "memory_summaries": []
+    }
+  ]
+}
+```
+[1764951898] tick=1 type=bad_luck | incident=incident | desc={"title": "李明的意外事件", "description": "李明在集市上卖错商品，引发小镇居民的不满，导致公共设施受损"} | dialogue=```json
+{
+  "title": "李明的意外事件",
+  "description": "李明在集市上卖错商品，引发小镇居民的不满，导致公共设施受损"
+}
+```
+[1764953235] tick=1 type=random_encounter | incident=incident | desc={"title": "意外邂逅", "description": "刘静在寻找神秘物品时意外遇到王芳，两人因好奇展开互动。"} | dialogue={"reaction": "刘静感到好奇，王芳则主动与她互动。", "state": {"c4": {"traits": {}}, "c2": {"traits": {}}}, "relationship": {"c4": {"loc-1": "loc-1"}, "c2": {"loc-1": "loc-1"}}}
+[1764953258] tick=1 type=bad_luck | incident=incident | desc={"title": "王芳的意外遭遇", "description": "王芳在镇上偶遇神秘事件，导致家庭陷入困境"} | dialogue={'reaction': '王芳在镇上偶遇神秘事件，导致家庭陷入困境', 'state': {'bad_luck': '1'}, 'traits': {}, 'relationships': []}
+[1764953536] tick=2 type=random_encounter | incident=incident | desc={"title": "意外发现古物", "description": "陈刚和刘静在城镇中偶然相遇，发现了一个古老的物品，引发了一系列神秘事件"} | dialogue=[LLM error] timed out
+[1764953574] tick=2 type=bad_luck | incident=incident | desc={"title": "小镇的意外", "description": "陈刚在一次意外中受伤，导致无法继续参与镇上的活动"} | dialogue=```json
+{"reaction": "陈刚在一次意外中受伤，导致无法继续参与镇上的活动。", "state": {}, "traits": {}, "relationships": []}
+```
+[1764953827] tick=3 type=random_encounter | incident=incident | desc={"title": "陌生人相遇", "description": "李明在公园偶遇陈刚，两人因咖啡馆的偶遇而产生互动，陈刚回忆起与李明的过往。"} | dialogue={'reaction': '李明在公园偶遇陈刚，两人因咖啡馆的偶遇而产生互动，陈刚回忆起与李明的过往。', 'state': {}, 'traits': {}, 'relationships': []}
+[1764953847] tick=3 type=bad_luck | incident=incident | desc={"title": "李明的意外失踪", "description": "李明在镇上遭遇意外，导致其失踪。"} | dialogue={"reaction": "李明在镇上遭遇意外失踪，导致其失踪。", "state": {"state": "失踪"}, "traits": {}, "relationships": []}
+[1764953877] tick=4 type=random_encounter | incident=incident | desc={"title": "陌生人相遇", "description": "李明和刘静在废弃仓库相遇，因意外发现对方的遗物而展开互动。"} | dialogue={"reaction": "李明发现遗物后与刘静互动，刘静则因发现遗物而展开对话。", "state": {}, "traits": {}, "relationships": []}
+[1764953897] tick=4 type=bad_luck | incident=incident | desc={"title": "李明的意外失踪", "description": "李明在镇上遭遇意外，导致其失踪。"} | dialogue={"reaction": "李明在镇上遭遇意外失踪，导致其失踪。", "state": {"state": "失踪"}, "traits": {}, "relationships": []}
+[1764954013] tick=6 type=random_encounter | incident=incident | desc={"title": "巡逻中的意外", "description": "王芳在巡逻中发现陈刚驾驶的车辆上有可疑物品，两人因车辆问题发生争执。"} | dialogue=王芳发现可疑物品并引发争执，陈刚未直接参与事件。
+[1764954033] tick=6 type=bad_luck | incident=incident | desc={"title": "张伟的意外事件", "description": "张伟在镇中心广场意外发现了一个古老的钟表，引发了一系列神秘的小镇危机"} | dialogue={"reaction": "张伟在镇中心广场意外发现古老钟表，引发小镇危机。", "state": {"id": "c3", "name": "张伟", "language": "zh-CN"}, "traits": {}, "relationships": []}
+[1764954764] tick=1 type=random_encounter | incident=incident | desc={"title": "陌生人相遇", "description": "刘静在集市上偶遇张伟，两人因交易发生意外碰撞"} | dialogue={"reaction": "刘静遇到张伟，两人因交易发生碰撞", "state": {"c4": {"comprehension": {}, "traits": {}, "states": {}}}, "traits": {}, "relationships": []}
+[1764954788] tick=1 type=bad_luck | incident=incident | desc={"title": "陈刚在镇上偷了东西，结果被警察抓住", "description": "陈刚在镇上偷了东西，结果被警察抓住"} | dialogue={"reaction": "震惊", "state": {"incident": "事件发生"}, "traits": {}, "relationships": [{"type": "incident", "id": "loc-1"}]}
+[1764954965] tick=2 type=random_encounter | incident=incident | desc={"title": "意外发现古物", "description": "陈刚和刘静在城镇中偶然相遇，发现了一个古老的物品，引发了一系列神秘事件"} | dialogue=陈刚：意外发现古物，引发神秘事件  
+刘静：同样，发现古物，引发神秘事件
+[1764954988] tick=2 type=bad_luck | incident=incident | desc={"title": "意外受伤", "description": "刘静在镇上遭遇意外事故，导致严重受伤"} | dialogue={"reaction": "刘静在镇上遭遇意外事故，导致严重受伤，无法正常活动。", "state": {}, "traits": {}, "relationships": []}
+[1764955056] tick=3 type=random_encounter | incident=incident | desc={"title": "神秘邂逅", "description": "张伟在城镇广场发现一个发光的古物，李明则在李明的笔记本上发现了一段被遗忘的日记"} | dialogue=（两人简短地聊了几句，彼此点头示意。）
+[1764955056] tick=3 type=bad_luck | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
+[1764955056] tick=4 type=random_encounter | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
+[1764955056] tick=4 type=bad_luck | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）
+[1764955077] tick=9 type=morning_greeting | incident=incident | desc=一个平凡的小插曲发生了。 | dialogue=（两人简短地聊了几句，彼此点头示意。）

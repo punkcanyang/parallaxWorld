@@ -9,6 +9,8 @@ from world.core.manager import MultiWorldManager
 from world.core.state import Character, Event, WorldStore
 from world.core.time import SimulationClock
 from world.fate.engine import FateEngine
+from world.core.scene import Scene, new_scene_id
+from world.logs.story_io import append_story
 
 router = APIRouter()
 
@@ -211,3 +213,71 @@ def summarize_memories(char_id: str, limit: int = Query(20, ge=1, le=200)):
     if summary_mem is None:
         return {"summary": None, "status": "no memories"}
     return {"summary": asdict(summary_mem)}
+
+
+# Scene / conversation APIs
+@router.post("/scenes")
+def create_scene(payload: Dict[str, Any]):
+    store = _require_store()
+    mgr = _require_manager()
+    scene_id = payload.get("id") or new_scene_id()
+    title = payload.get("title", f"Scene {scene_id}")
+    participants = payload.get("participants", [])
+    if len(participants) < 2:
+        raise HTTPException(status_code=400, detail="at least 2 participants required")
+    scene = Scene(
+        id=scene_id,
+        title=title,
+        participants=participants,
+        location_id=payload.get("location_id"),
+        background_tags=payload.get("background_tags", []),
+        max_turns=payload.get("max_turns", 6),
+    )
+    store.add_scene(scene)
+    return {"scene_id": scene_id, "title": title}
+
+
+@router.post("/scenes/{scene_id}/step")
+def step_scene(scene_id: str):
+    store = _require_store()
+    mgr = _require_manager()
+    scene = store.get_scene(scene_id)
+    if not scene:
+        raise HTTPException(status_code=404, detail="scene not found")
+    if scene.status == "completed":
+        return {"status": "completed", "turns": [asdict(t) for t in scene.turns]}
+
+    speaker_id = scene.next_speaker()
+    speaker = store.world.characters.get(speaker_id)
+    if not speaker:
+        raise HTTPException(status_code=400, detail=f"speaker {speaker_id} not found")
+
+    recent = scene.turns[-5:]
+    history_text = "\n".join([f"{t.speaker}: {t.utterance}" for t in recent])
+    background = store.world.background
+    tags = ", ".join(scene.background_tags)
+    prompt = (
+        f"世界背景: {background}; 标签: {tags}\n"
+        f"场景: {scene.title} @ {scene.location_id}\n"
+        f"角色: {speaker.name} ({speaker.role}) 性格: {speaker.traits} 状态: {speaker.states}\n"
+        f"最近对话:\n{history_text}\n"
+        f"{speaker.name} 现在发言/想法（用{speaker.language}，简短，无思维链）。"
+    )
+    utterance = mgr.llm.generate_dialogue(prompt)
+    scene.add_turn(speaker_id, utterance)
+    append_story(mgr.base_dir / mgr.current_world_id, scene_id, {"speaker": speaker.name, "utterance": utterance})
+    return {"scene_id": scene_id, "status": scene.status, "turn": {"speaker": speaker_id, "utterance": utterance}}
+
+
+@router.get("/scenes/{scene_id}/log")
+def scene_log(scene_id: str):
+    store = _require_store()
+    scene = store.get_scene(scene_id)
+    if not scene:
+        raise HTTPException(status_code=404, detail="scene not found")
+    return {
+        "scene_id": scene.id,
+        "title": scene.title,
+        "status": scene.status,
+        "turns": [asdict(t) for t in scene.turns],
+    }

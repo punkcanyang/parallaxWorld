@@ -3,7 +3,9 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
+import uuid
 from world.logs.io import append_ndjson, tail_ndjson
+from world.core.scene import Scene
 
 @dataclass
 class Location:
@@ -72,6 +74,7 @@ class World:
     memories: Dict[str, Memory] = field(default_factory=dict)
     events: Dict[str, Event] = field(default_factory=dict)
     logs: list = field(default_factory=list)
+    scenes: Dict[str, Scene] = field(default_factory=dict)
 
 
 class WorldStore:
@@ -85,6 +88,7 @@ class WorldStore:
         self.memory_summary_every_n = 5
         self.memory_summary_max_items = 5
         self.memory_event_count: Dict[str, int] = {}
+        self.scenes: Dict[str, Scene] = {}
 
     def add_location(self, location: Location) -> None:
         self.world.locations[location.id] = location
@@ -156,3 +160,10 @@ class WorldStore:
         self.add_memory(summary_memory)
         self.memory_event_count[char_id] = 0
         return summary_memory
+
+    def add_scene(self, scene: Scene):
+        self.scenes[scene.id] = scene
+        self.world.scenes[scene.id] = scene
+
+    def get_scene(self, scene_id: str) -> Optional[Scene]:
+        return self.scenes.get(scene_id) or self.world.scenes.get(scene_id)

@@ -182,3 +182,31 @@ class HttpLLMClient:
             return self._strip_think(content)
         except Exception:
             return "（最近几条记忆被简要整理。）"
+
+    def generate_dialogue(self, prompt: str) -> str:
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": prompt},
+        ]
+        payload: Dict = {
+            "messages": messages,
+            "temperature": self.temperature,
+            "stream": False,
+            "stop": self.stop_tokens,
+            "max_tokens": self.max_tokens,
+        }
+        if self.model:
+            payload["model"] = self.model
+        try:
+            resp = self._client.post(self.endpoint, json=payload)
+            resp.raise_for_status()
+            data = resp.json()
+            content = (
+                data.get("choices", [{}])[0]
+                .get("message", {})
+                .get("content", "")
+            )
+            cleaned = self._strip_think(content)
+            return cleaned if cleaned else "（他们简单交流了几句。）"
+        except Exception:
+            return "（他们简单交流了几句。）"

@@ -9,6 +9,7 @@ from parallax_utils.file_util import get_project_root
 from world.core.scene import Scene
 from world.core.state import Character, Event, Location, Memory, World
 from world.core.timeline import Timeline
+from world.persistence.map_io import load_map
 
 
 def _dict_to_location(d: Dict) -> Location:
@@ -16,8 +17,10 @@ def _dict_to_location(d: Dict) -> Location:
         id=d["id"],
         name=d.get("name", d["id"]),
         kind=d.get("kind", "generic"),
+        coords=d.get("coords"),
         connections=d.get("connections", []),
         tags=d.get("tags", []),
+        description=d.get("description", ""),
     )
 
 
@@ -123,4 +126,12 @@ def load_world(world_id: str, base_dir: Path) -> World:
     }
     world.events = {eid: _dict_to_event(ev) for eid, ev in raw.get("events", {}).items()}
     # scenes/timelines currently not persisted fully; keep empty for now
+    # Apply map.json if present (locations with coords/description)
+    try:
+        map_data = load_map(world_id, base_dir)
+        for loc in map_data.get("locations", []):
+            loc_obj = _dict_to_location(loc)
+            world.locations[loc_obj.id] = loc_obj
+    except Exception:
+        pass
     return world

@@ -35,6 +35,11 @@
 - 追加：`WorldStore.append_log` 会同步写入内存与文件（最佳努力）。
 - 查询：`GET /world/logs/tail?limit=10&kind=event|dialogue` 返回尾部日志（优先读取文件，便于跨进程/重启后查看）。
 
+## 地图/坐标
+- 规划见 `docs/world/map_spec.md`，地图存放 `data/worlds/<world_id>/map.json`。
+- 采用平面 XY 坐标，支持单点地点 `locations` 与范围场景 `zones`。
+- 后续会提供地点/移动/距离筛选 API。
+
 ## 基础 API（前端可用）
 - GET `/world/world`：世界快照（含 time_scale、locations、characters 概要等）。
 - POST `/world/world/time-scale`：设定 time_scale。

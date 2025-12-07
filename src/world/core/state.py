@@ -13,8 +13,10 @@ class Location:
     id: str
     name: str
     kind: str = "generic"
+    coords: Optional[Dict[str, float]] = None  # {"x": float, "y": float}
     connections: List[str] = field(default_factory=list)
     tags: List[str] = field(default_factory=list)
+    description: str = ""
 
 
 @dataclass
@@ -44,6 +46,7 @@ class Character:
     goals: List[str] = field(default_factory=list)
     flags: Dict[str, bool] = field(default_factory=dict)
     location_id: Optional[str] = None
+    position: Optional[Dict[str, float]] = None  # optional fine-grained coords within a location
 
 
 @dataclass

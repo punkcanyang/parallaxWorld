@@ -1,0 +1,126 @@
+{
+  "locations": [
+    {
+      "id": "loc-square",
+      "name": "中央广场",
+      "coords": { "x": 0, "y": 0 },
+      "tags": ["公共", "集会"],
+      "description": "小镇核心，有喷泉、公告栏与周末市集，主要会合点。"
+    },
+    {
+      "id": "loc-townhall",
+      "name": "镇公所",
+      "coords": { "x": -1, "y": 1 },
+      "tags": ["行政", "信息"],
+      "description": "镇长办公室与档案室，镇内任务与布告的来源。"
+    },
+    {
+      "id": "loc-market",
+      "name": "集市街",
+      "coords": { "x": 2, "y": 0 },
+      "tags": ["商贸", "摊位"],
+      "description": "连排的摊位与小铺，白天买卖热络，夜晚有小酒馆。"
+    },
+    {
+      "id": "loc-inn",
+      "name": "旅店与酒馆",
+      "coords": { "x": 1, "y": -1 },
+      "tags": ["休息", "情报"],
+      "description": "旅人落脚、消息交换之处，常有小型演出与低语。"
+    },
+    {
+      "id": "loc-forge",
+      "name": "铁匠铺",
+      "coords": { "x": 3, "y": -1 },
+      "tags": ["锻造", "武器"],
+      "description": "铁匠敲击声不断，可打造农具与武器，火花与汗水交织。"
+    },
+    {
+      "id": "loc-library",
+      "name": "图书馆/学徒馆",
+      "coords": { "x": -2, "y": 2 },
+      "tags": ["知识", "学习"],
+      "description": "藏书与学徒课程的场所，传闻有古老卷轴。"
+    },
+    {
+      "id": "loc-chapel",
+      "name": "小教堂",
+      "coords": { "x": -3, "y": 0 },
+      "tags": ["信仰", "安静"],
+      "description": "小型礼拜堂，提供祈祷与心灵抚慰，有时举办节庆。"
+    },
+    {
+      "id": "loc-riverbank",
+      "name": "河岸步道",
+      "coords": { "x": 0, "y": -3 },
+      "tags": ["自然", "散步"],
+      "description": "沿河的石板步道，傍晚常有人散步、钓鱼，偶尔有乐手演奏。"
+    },
+    {
+      "id": "loc-farm",
+      "name": "南侧农田",
+      "coords": { "x": 2, "y": -4 },
+      "tags": ["农田", "粮食"],
+      "description": "小镇粮食来源，田垄与稻草堆，偶尔需要帮忙收成。"
+    },
+    {
+      "id": "loc-forest-edge",
+      "name": "林缘小径",
+      "coords": { "x": 4, "y": 2 },
+      "tags": ["森林", "冒险"],
+      "description": "通往外圈森林的小径，采药人与巡逻队的必经之路。"
+    },
+    {
+      "id": "loc-watchtower",
+      "name": "瞭望塔",
+      "coords": { "x": -4, "y": 1 },
+      "tags": ["防卫", "视野"],
+      "description": "俯瞰全镇与外围的高点，卫兵轮班巡逻。"
+    },
+    {
+      "id": "loc-workshop",
+      "name": "手作工坊",
+      "coords": { "x": -1, "y": -2 },
+      "tags": ["手作", "设计"],
+      "description": "工艺师与设计师交流的地方，可看到模型与奇妙发明。"
+    }
+  ],
+  "zones": [
+    {
+      "id": "zone-oldtown",
+      "name": "旧城区",
+      "description": "石板路与老建筑聚集区，氛围宁静，包含广场与公所。",
+      "coords": [
+        { "x": -2, "y": -1 },
+        { "x": -2, "y": 2 },
+        { "x": 1, "y": 2 },
+        { "x": 1, "y": -1 }
+      ],
+      "contains": ["loc-square", "loc-townhall", "loc-library"]
+    },
+    {
+      "id": "zone-riverside",
+      "name": "河岸带",
+      "description": "沿河而建的步道与小店，夜晚有乐手与酒馆客。",
+      "coords": [
+        { "x": -1, "y": -4 },
+        { "x": 2, "y": -4 },
+        { "x": 2, "y": -2 },
+        { "x": -1, "y": -2 }
+      ],
+      "contains": ["loc-riverbank", "loc-inn", "loc-farm"]
+    },
+    {
+      "id": "zone-forest",
+      "name": "林缘地带",
+      "description": "接近外圈森林的缓冲区，适合冒险、采药与巡逻。",
+      "coords": [
+        { "x": 2, "y": 0 },
+        { "x": 5, "y": 0 },
+        { "x": 5, "y": 3 },
+        { "x": 2, "y": 3 }
+      ],
+      "contains": ["loc-forest-edge", "loc-market", "loc-forge"]
+    }
+  ]
+}

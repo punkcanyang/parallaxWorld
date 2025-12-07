@@ -9,6 +9,7 @@ from world.fate.engine import FateEngine, build_default_rules
 from world.llm.client import HttpLLMClient
 from world.logs.io import set_log_dir
 from world.persistence.world_io import load_world, save_world
+from world.persistence.map_io import load_map, save_map
 
 
 class MultiWorldManager:
@@ -29,6 +30,11 @@ class MultiWorldManager:
         set_log_dir(self._world_dir(world_id))
         store = WorldStore(world, storage_dir=self._world_dir(world_id))
         save_world(store.world, self._world_dir(world_id))
+        # ensure map exists
+        try:
+            load_map(world_id, self.base_dir)
+        except Exception:
+            pass
         return store
 
     def list_worlds(self):

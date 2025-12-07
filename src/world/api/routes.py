@@ -13,6 +13,7 @@ from world.fate.engine import FateEngine
 from world.core.scene import Scene, new_scene_id
 from world.core.timeline import Timeline, new_timeline_id
 from world.logs.story_io import append_story
+from world.persistence.map_io import load_map, save_map
 
 router = APIRouter()
 
@@ -57,10 +58,75 @@ def _require_manager() -> MultiWorldManager:
     return _manager
 
 
+def _select_participants(store: WorldStore, provided: List[str] | None, max_count: int = 3, location_id: Optional[str] = None) -> List[str]:
+    actor_ids = provided or list(store.world.characters.keys())
+    if not actor_ids:
+        return []
+    if location_id and store.world.locations.get(location_id) and store.world.locations[location_id].coords:
+        target = store.world.locations[location_id].coords
+
+        def dist_to(actor_id: str) -> float:
+            ch = store.world.characters.get(actor_id)
+            if not ch:
+                return 1e9
+            loc_id = ch.location_id
+            if loc_id and store.world.locations.get(loc_id) and store.world.locations[loc_id].coords:
+                loc = store.world.locations[loc_id].coords
+                dx = loc.get("x", 0) - target.get("x", 0)
+                dy = loc.get("y", 0) - target.get("y", 0)
+                return (dx * dx + dy * dy) ** 0.5
+            return 1e9
+
+        actor_ids = sorted(actor_ids, key=dist_to)
+    if len(actor_ids) > max_count:
+        actor_ids = actor_ids[: max_count + 2]
+        actor_ids = random.sample(actor_ids, max_count)
+    return actor_ids
+
+
+def _pick_location_id(store: WorldStore, provided: Optional[str] = None) -> Optional[str]:
+    if provided and provided in store.world.locations:
+        return provided
+    if store.world.locations:
+        return random.choice(list(store.world.locations.keys()))
+    return None
+
+
 @router.get("/world")
 def get_world():
     store = _require_store()
     return asdict(store.world)
+
+
+@router.get("/map")
+def get_map():
+    mgr = _require_manager()
+    data = load_map(mgr.current_world_id, mgr.base_dir)
+    return data
+
+
+@router.post("/map")
+def set_map(payload: Dict[str, Any]):
+    mgr = _require_manager()
+    save_map(mgr.current_world_id, payload, mgr.base_dir)
+    # apply to world locations
+    try:
+        for loc in payload.get("locations", []):
+            loc_id = loc.get("id")
+            if not loc_id:
+                continue
+            if loc_id in mgr.store.world.locations:
+                mgr.store.world.locations[loc_id].coords = loc.get("coords")
+                mgr.store.world.locations[loc_id].description = loc.get("description", "")
+                mgr.store.world.locations[loc_id].tags = loc.get("tags", mgr.store.world.locations[loc_id].tags)
+            else:
+                from world.persistence.world_io import _dict_to_location
+
+                mgr.store.world.locations[loc_id] = _dict_to_location(loc)
+        mgr.store.save()
+    except Exception:
+        pass
+    return {"status": "ok"}
 
 
 @router.post("/world/time-scale")
@@ -113,6 +179,23 @@ def get_character(char_id: str):
     return data
 
 
+@router.post("/characters/{char_id}/move")
+def move_character(char_id: str, payload: Dict[str, Any]):
+    store = _require_store()
+    c = store.world.characters.get(char_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="character not found")
+    loc_id = payload.get("location_id")
+    if loc_id and loc_id not in store.world.locations:
+        raise HTTPException(status_code=404, detail="location not found")
+    if loc_id:
+        c.location_id = loc_id
+    if payload.get("position"):
+        c.position = payload.get("position")
+    store.save()
+    return {"id": char_id, "location_id": c.location_id, "position": c.position}
+
+
 @router.get("/events")
 def list_events(
     status: Optional[str] = None,
@@ -123,6 +206,27 @@ def list_events(
     if status:
         events = [ev for ev in events if ev.status == status]
     return {"events": [asdict(ev) for ev in events], "status": status, "limit": limit}
+
+
+@router.get("/locations")
+def list_locations():
+    store = _require_store()
+    return {"locations": [asdict(loc) for loc in store.world.locations.values()]}
+
+
+@router.get("/locations/distance")
+def distance(id1: str, id2: str):
+    store = _require_store()
+    l1 = store.world.locations.get(id1)
+    l2 = store.world.locations.get(id2)
+    if not l1 or not l2:
+        raise HTTPException(status_code=404, detail="location not found")
+    if not l1.coords or not l2.coords:
+        raise HTTPException(status_code=400, detail="coords missing")
+    dx = l1.coords.get("x", 0) - l2.coords.get("x", 0)
+    dy = l1.coords.get("y", 0) - l2.coords.get("y", 0)
+    dist = (dx * dx + dy * dy) ** 0.5
+    return {"distance": dist}
 
 
 @router.post("/events")
@@ -224,14 +328,15 @@ def create_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     mgr = _require_manager()
     scene_id = payload.get("id") or new_scene_id()
     title = payload.get("title", f"Scene {scene_id}")
-    participants = payload.get("participants", [])
+    loc_id = _pick_location_id(store, payload.get("location_id"))
+    participants = _select_participants(store, payload.get("participants"), location_id=loc_id)
     if len(participants) < 2:
         raise HTTPException(status_code=400, detail="at least 2 participants required")
     scene = Scene(
         id=scene_id,
         title=title,
         participants=participants,
-        location_id=payload.get("location_id"),
+        location_id=loc_id,
         background_tags=payload.get("background_tags", []),
         max_turns=payload.get("max_turns", 6),
     )
@@ -293,13 +398,8 @@ def scene_log(scene_id: str):
 def auto_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     store = _require_store()
     mgr = _require_manager()
-    actor_ids = payload.get("participants") or []
-    if not actor_ids:
-        actor_ids = list(store.world.characters.keys())
-        if len(actor_ids) >= 3:
-            actor_ids = random.sample(actor_ids, 3)
-        elif len(actor_ids) == 2:
-            pass
+    loc_id = _pick_location_id(store, payload.get("location_id"))
+    actor_ids = _select_participants(store, payload.get("participants"), location_id=loc_id)
     if len(actor_ids) < 2:
         raise HTTPException(status_code=400, detail="at least 2 participants required")
     background = store.world.background
@@ -307,7 +407,7 @@ def auto_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     gen = mgr.llm.generate_scene(background, tags, store, actor_ids)
     scene_id = new_scene_id()
     title = gen.get("title", f"Scene {scene_id}")
-    location_id = gen.get("location_id") or payload.get("location_id")
+    location_id = gen.get("location_id") or loc_id
     max_turns = gen.get("max_turns", 6)
     bg_tags = gen.get("background_tags", tags)
     scene = Scene(
@@ -327,13 +427,8 @@ def auto_run_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     """Auto-generate a scene and run all turns until完成或 max_turns。"""
     store = _require_store()
     mgr = _require_manager()
-    actor_ids = payload.get("participants") or []
-    if not actor_ids:
-        actor_ids = list(store.world.characters.keys())
-        if len(actor_ids) >= 3:
-            actor_ids = random.sample(actor_ids, 3)
-        elif len(actor_ids) == 2:
-            pass
+    loc_id = _pick_location_id(store, payload.get("location_id"))
+    actor_ids = _select_participants(store, payload.get("participants"), location_id=loc_id)
     if len(actor_ids) < 2:
         raise HTTPException(status_code=400, detail="at least 2 participants required")
     background = store.world.background
@@ -341,7 +436,7 @@ def auto_run_scene(payload: Dict[str, Any] = Body(default_factory=dict)):
     gen = mgr.llm.generate_scene(background, tags, store, actor_ids)
     scene_id = new_scene_id()
     title = gen.get("title", f"Scene {scene_id}")
-    location_id = gen.get("location_id") or payload.get("location_id")
+    location_id = gen.get("location_id") or loc_id
     max_turns = gen.get("max_turns", 6)
     bg_tags = gen.get("background_tags", tags)
     scene = Scene(
@@ -407,7 +502,7 @@ def auto_timeline(payload: Dict[str, Any] = Body(default_factory=dict)):
         id=scene_id,
         title=gen.get("title", f"Scene {scene_id}"),
         participants=actor_ids,
-        location_id=gen.get("location_id") or payload.get("location_id"),
+        location_id=gen.get("location_id") or loc_id,
         background_tags=gen.get("background_tags", tags) if isinstance(gen.get("background_tags"), list) else tags,
         max_turns=gen.get("max_turns", 6) if isinstance(gen.get("max_turns"), int) else 6,
     )
@@ -464,7 +559,7 @@ def step_timeline(payload: Dict[str, Any] = Body(default_factory=dict)):
                 id=new_scene_id(),
                 title=gen.get("title", f"Scene {len(timeline.scenes)+1}"),
                 participants=timeline.participants,
-                location_id=gen.get("location_id"),
+                location_id=gen.get("location_id") or _pick_location_id(store, None),
                 background_tags=gen.get("background_tags", timeline.background_tags),
                 max_turns=gen.get("max_turns", 6) if isinstance(gen.get("max_turns"), int) else 6,
             )

@@ -1,0 +1,23 @@
+{
+  "id": "myworld",
+  "name": "我的新世界",
+  "background": "奇幻森林",
+  "epoch": 0,
+  "time_scale": 1.0,
+  "default_language": "zh-CN",
+  "force_default_language": true,
+  "env_state": {},
+  "locations": {
+    "loc-1": {
+      "id": "loc-1",
+      "name": "Square",
+      "kind": "center",
+      "connections": [],
+      "tags": []
+    }
+  },
+  "characters": {},
+  "memories": {},
+  "events": {},
+  "scenes": {}
+}
